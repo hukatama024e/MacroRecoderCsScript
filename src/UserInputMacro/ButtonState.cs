@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-namespace UserInputMacro
+﻿namespace UserInputMacro
 {
 	public class ButtonState
 	{
