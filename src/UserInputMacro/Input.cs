@@ -21,6 +21,11 @@ namespace UserInputMacro
 	public enum MouseEvent : uint
 	{
 		/// <summary>
+		/// No mouse event
+		/// </summary>
+		None = 0x0000,
+
+		/// <summary>
 		/// MouseInputのxとyが絶対座標か(設定されていない場合は相対座標)
 		/// </summary>
 		Absolute = 0x8000,
@@ -97,6 +102,11 @@ namespace UserInputMacro
 	[Flags]
 	public enum KeyEvent : uint
 	{
+		/// <summary>
+		/// No keyboard event
+		/// </summary>
+		None = 0x0000,
+
 		/// <summary>
 		/// スキャンコードが接頭辞ビット(0xE0)によって先行している
 		/// </summary>
