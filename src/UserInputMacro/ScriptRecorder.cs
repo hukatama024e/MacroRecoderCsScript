@@ -26,6 +26,14 @@ namespace UserInputMacro
 			{ HookEventID.WM_MBUTTONUP,   nameof( MacroScript.PullMiddleButton ) },
 		};
 
+		private static readonly Dictionary<int, string> KeyFuncDic = new Dictionary<int, string>()
+		{
+			{ HookEventID.WM_KEYDOWN,    nameof( MacroScript.PressKey ) },
+			{ HookEventID.WM_KEYUP,      nameof( MacroScript.ReleaseKey ) },
+			{ HookEventID.WM_SYSKEYDOWN, nameof( MacroScript.PressKey ) },
+			{ HookEventID.WM_SYSKEYUP,   nameof( MacroScript.ReleaseKey ) },
+		};
+
 		public string Record
 		{
 			get { return recordScript.ToString(); }
@@ -59,8 +67,12 @@ namespace UserInputMacro
 			delayWatch.Reset();
 		}
 
-		private void RecordKeyLog( KeyHookStruct keyStr )
+		private void RecordKeyLog( KeyHookStruct keyStr, int keyEvent )
 		{
+			recordScript.Append( $"Delay({delayWatch.ElapsedMilliseconds});\r\n" );
+			delayWatch.Restart();
+
+			recordScript.Append( ToKeyMacroFormat( keyStr, keyEvent ) );
 		}
 
 		private void RecordMouseLog( MouseHookStruct hookStr, int mouseEvent )
@@ -69,6 +81,13 @@ namespace UserInputMacro
 			delayWatch.Restart();
 
 			recordScript.Append( ToMouseMacroFormat( hookStr, mouseEvent ) );
+		}
+
+		private string ToKeyMacroFormat( KeyHookStruct keyStr, int keyEvent )
+		{
+			var funcName = KeyFuncDic[ keyEvent ];
+
+			return $"{funcName}({keyStr.virtualKey});\r\n";
 		}
 
 		private string ToMouseMacroFormat( MouseHookStruct hookStr, int mouseEvent )

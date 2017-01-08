@@ -18,7 +18,7 @@ namespace UserInputMacro
 		private HookProc KeyHookCallback { get; set; }
 		private HookProc MouseHookCallback { get; set; }
 
-		public Action<KeyHookStruct> KeyHook { get; set; }
+		public Action<KeyHookStruct, int> KeyHook { get; set; }
 		public Action<MouseHookStruct, int> MouseHook { get; set; }
 		public Action<Exception> HookErrorProc { get; set; }
 
@@ -36,7 +36,7 @@ namespace UserInputMacro
 			KeyHookCallback = KeyHookProc;
 			MouseHookCallback = MouseHookProc;
 
-			KeyHook = ( s ) => { };
+			KeyHook = ( s, e ) => { };
 			MouseHook = ( s, e ) => { };
 			HookErrorProc = ( e ) => { };
 		}
@@ -101,7 +101,7 @@ namespace UserInputMacro
 		{
 			try {
 				var keyStruct = ( KeyHookStruct ) Marshal.PtrToStructure( lParam, typeof( KeyHookStruct ) );
-				KeyHook( keyStruct );
+				KeyHook( keyStruct, wParam.ToInt32() );
 			}
 			catch( Exception ex ) {
 				HookErrorProc( ex );

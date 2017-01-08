@@ -17,6 +17,26 @@ namespace UserInputMacro
 			Thread.Sleep( millsecond );
 		}
 
+		public void PressKey( ushort virtualKey )
+		{
+			var input = new List<KeyInput>
+			{
+				CreateKeyInput( virtualKey, KeyEvent.None )
+			};
+
+			SendInputWrapper.SendKeyInput( input.ToArray() );
+		}
+
+		public void ReleaseKey( ushort virtualKey )
+		{
+			var input = new List<KeyInput>
+			{
+				CreateKeyInput( virtualKey, KeyEvent.KeyUp )
+			};
+
+			SendInputWrapper.SendKeyInput( input.ToArray() );
+		}
+
 		public void SetMousePos( int x, int y )
 		{
 			SendSingleMouseEvent( x, y, MouseEvent.Move );
@@ -109,6 +129,17 @@ namespace UserInputMacro
 			=> ( int ) ( coordX / SystemParameters.PrimaryScreenWidth * COORDINATE_MAX );
 		private static int GetAbsoluteCoodinateY( int coordY )
 			=> ( int ) ( coordY / SystemParameters.PrimaryScreenHeight * COORDINATE_MAX );
+
+		private KeyInput CreateKeyInput( ushort virtualKeyCode, KeyEvent ev )
+		{
+			var input = new KeyInput
+			{
+				virtualKey = virtualKeyCode,
+				flags = ev
+			};
+
+			return input;
+		}
 
 		private MouseInput CreateMouseInput( int x, int y, MouseEvent ev )
 		{
