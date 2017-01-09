@@ -7,12 +7,12 @@ namespace UserInputMacro
 	public enum XButtonFlag : uint
 	{
 		/// <summary>
-		/// 最初の拡張ボタンを押下・開放した
+		/// Press or release 1st extend mouse button
 		/// </summary>
 		XButton1 = 0x0001,
 
 		/// <summary>
-		/// 2番目の拡張ボタンを押下・開放した
+		/// Press or release 2nd extend mouse button
 		/// </summary>
 		XButton2 = 0x0002
 	};
@@ -26,18 +26,17 @@ namespace UserInputMacro
 		None = 0x0000,
 
 		/// <summary>
-		/// MouseInputのxとyが絶対座標か(設定されていない場合は相対座標)
+		/// Coordinate is absolute(if not specified, coordinate is relative)
 		/// </summary>
 		Absolute = 0x8000,
 
 		/// <summary>
-		/// マウスホイールを横方向に動作した
-		/// (MouseInputのmouseDataにマウスホイールの回転量を設定する)
+		/// Mouse wheel was moved horizontally(if specified, mouseData is the amount of movement)
 		/// </summary>
 		Hwheel = 0x01000,
 
 		/// <summary>
-		/// マウスカーソルを移動した
+		/// Mouse was moved
 		/// </summary>
 		Move = 0x0001,
 
@@ -47,54 +46,52 @@ namespace UserInputMacro
 		MoveNoCoalesce = 0x2000,
 
 		/// <summary>
-		/// マウスの左ボタンを押下した
+		/// Mouse left button was pressed
 		/// </summary>
 		LeftDown = 0x0002,
 
 		/// <summary>
-		/// マウスの左ボタンを開放した
+		/// Mouse left button was released
 		/// </summary>
 		LeftUp = 0x0004,
 
 		/// <summary>
-		/// マウスの右ボタンを押下した
+		/// Mouse right button was pressed
 		/// </summary>
 		RightDown = 0x0008,
 
 		/// <summary>
-		/// マウスの右ボタンを開放した
+		/// Mouse right button was released
 		/// </summary>
 		RightUp = 0x0010,
 
 		/// <summary>
-		/// マウスの中央ボタンを押下した
+		/// Mouse middle button was pressed
 		/// </summary>
 		MiddleDown = 0x0020,
 
 		/// <summary>
-		/// マウスの中央ボタンを開放した
+		/// Mouse middle button was released
 		/// </summary>
 		MiddleUp = 0x0040,
 
 		/// <summary>
-		/// デスクトップ全体に対応する
-		/// (必ずAbsoluteと共に使用する)
+		/// Coordinate maps to entire desktop(and must used with Absolute)
 		/// </summary>
 		VirtualDesk = 0x4000,
 
 		/// <summary>
-		/// マウスホイールを動作した
-		/// (MouseInputのmouseDataにマウスホイールの回転量を設定する)
+		/// Mouse wheel was moved(if specified, mouseData is the amount of movement)
 		/// </summary>
 		Wheel = 0x0800,
 
 		/// <summary>
-		/// 拡張ボタンを押下した
+		/// Mouse extend button was pressed
 		/// </summary>
 		XDown = 0x0080,
 
 		/// <summary>
-		/// 拡張ボタンを開放した
+		/// Mouse extend button was released
 		/// </summary>
 		XUp = 0x0100
 	};
@@ -108,17 +105,17 @@ namespace UserInputMacro
 		None = 0x0000,
 
 		/// <summary>
-		/// スキャンコードが接頭辞ビット(0xE0)によって先行している
+		/// Scan code was proceeded by a prefix byle(0xE0)
 		/// </summary>
 		ExtendEdKey = 0x0001,
 
 		/// <summary>
-		/// キーが開放された(指定が無ければ押下)
+		/// Released key(if not specified, pressed key)
 		/// </summary>
 		KeyUp = 0x0002,
 
 		/// <summary>
-		/// ScanCodeによってキーが識別され、VirtualKeyが無効になる
+		/// Key was identified by scan code and ignored virtual key
 		/// </summary>
 		ScanCode = 0x0008,
 
