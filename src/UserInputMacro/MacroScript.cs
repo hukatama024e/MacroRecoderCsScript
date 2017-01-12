@@ -122,9 +122,20 @@ namespace UserInputMacro
 		}
 
 		private static int GetAbsoluteCoodinateX( int coordX )
-			=> ( int ) ( coordX / SystemParameters.PrimaryScreenWidth * COORDINATE_MAX );
+		{
+			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
+			var dpiWidth = src.CompositionTarget.TransformFromDevice.M11;
+
+			return ( int ) ( coordX / ( SystemParameters.PrimaryScreenWidth / dpiWidth ) * COORDINATE_MAX );
+		}
+
 		private static int GetAbsoluteCoodinateY( int coordY )
-			=> ( int ) ( coordY / SystemParameters.PrimaryScreenHeight * COORDINATE_MAX );
+		{
+			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
+			var dpiHeight = src.CompositionTarget.TransformFromDevice.M22;
+
+			return ( int ) ( coordY / ( SystemParameters.PrimaryScreenHeight / dpiHeight ) * COORDINATE_MAX );
+		}
 
 		private KeyInput CreateKeyInput( ushort virtualKeyCode, KeyEvent ev )
 		{
