@@ -136,7 +136,7 @@ namespace UserInputMacro
 	{
 		public int coordinateX;
 		public int coordinateY;
-		public uint mouseData;
+		public int mouseData;
 		public MouseEvent flags;
 		public uint time;
 		public IntPtr extraInfo;

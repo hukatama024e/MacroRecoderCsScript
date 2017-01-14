@@ -18,7 +18,7 @@ namespace UserInputMacro
 	public struct MouseHookStruct
 	{
 		public Point coordinatePoint;
-		public uint mouseData;
+		public int mouseData;
 		public LowLevelMouseEvent flags;
 		public uint time;
 		public IntPtr extraInfo;

@@ -92,11 +92,17 @@ namespace UserInputMacro
 			var funcName = MouseFuncDic[ mouseEvent ];
 
 			if( mouseEvent == HookEventID.WM_MOUSEWHEEL || mouseEvent == HookEventID.WM_MOUSEHWHEEL ) {
-				return $"{funcName}({hookStr.coordinatePoint.x}, {hookStr.coordinatePoint.y}, {hookStr.mouseData});\r\n";
+				return $"{funcName}({hookStr.coordinatePoint.x}, {hookStr.coordinatePoint.y}, {GetWheelData( hookStr.mouseData )});\r\n";
 			}
 			else {
 				return $"{funcName}({hookStr.coordinatePoint.x}, {hookStr.coordinatePoint.y});\r\n";
 			}
+		}
+
+		private int GetWheelData( int mouseData )
+		{
+			// Get high-order word
+			return  mouseData >> 16;
 		}
 	}
 }

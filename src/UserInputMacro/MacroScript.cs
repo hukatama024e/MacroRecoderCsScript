@@ -68,7 +68,7 @@ namespace UserInputMacro
 			SendSingleMouseEvent( x, y, MouseEvent.RightUp );
 		}
 
-		public void WheelMouse( int x, int y, uint wheelRotate )
+		public void WheelMouse( int x, int y, int wheelRotate )
 		{
 			var input = new List<MouseInput>
 			{
@@ -78,7 +78,7 @@ namespace UserInputMacro
 			SendInputWrapper.SendMouseInput( input.ToArray() );
 		}
 
-		public void HWheelMouse( int x, int y, uint wheelRotate )
+		public void HWheelMouse( int x, int y, int wheelRotate )
 		{
 			var input = new List<MouseInput>
 			{
@@ -161,7 +161,7 @@ namespace UserInputMacro
 			return input;
 		}
 
-		private MouseInput CreateMouseWheel( int x, int y, MouseEvent ev, uint wheelRotate )
+		private MouseInput CreateMouseWheel( int x, int y, MouseEvent ev, int wheelRotate )
 		{
 			var input = CreateMouseInput( x, y, ev );
 			input.mouseData = wheelRotate;
