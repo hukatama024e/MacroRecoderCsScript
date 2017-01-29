@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 
@@ -6,7 +7,16 @@ namespace UserInputMacro
 {
 	public class MacroScript
 	{
+		[Flags]
+		enum DebugMode : byte
+		{
+			None = 0x00,
+			MouseOnly = 0x01,
+			KeyOnly = 0x02
+		};
+
 		private static readonly int COORDINATE_MAX = 65535;
+		private DebugMode debugMode = DebugMode.None;
 
 		public void Delay( int millsecond )
 		{
@@ -20,7 +30,7 @@ namespace UserInputMacro
 				CreateKeyInput( virtualKey, KeyEvent.None )
 			};
 
-			SendInputWrapper.SendKeyInput( input.ToArray() );
+			SendKeyInput( input.ToArray() );
 		}
 
 		public void ReleaseKey( ushort virtualKey )
@@ -30,7 +40,7 @@ namespace UserInputMacro
 				CreateKeyInput( virtualKey, KeyEvent.KeyUp )
 			};
 
-			SendInputWrapper.SendKeyInput( input.ToArray() );
+			SendKeyInput( input.ToArray() );
 		}
 
 		public void SetMousePos( int x, int y )
@@ -75,7 +85,7 @@ namespace UserInputMacro
 				CreateMouseWheel( x, y, MouseEvent.Wheel, wheelRotate ),
 			};
 
-			SendInputWrapper.SendMouseInput( input.ToArray() );
+			SendMouseInput( input.ToArray() );
 		}
 
 		public void HWheelMouse( int x, int y, int wheelRotate )
@@ -85,7 +95,7 @@ namespace UserInputMacro
 				CreateMouseWheel( x, y, MouseEvent.Hwheel, wheelRotate ),
 			};
 
-			SendInputWrapper.SendMouseInput( input.ToArray() );
+			SendMouseInput( input.ToArray() );
 		}
 
 		public void LeftClick( int x, int y )
@@ -96,7 +106,7 @@ namespace UserInputMacro
 				CreateMouseInput( x, y, MouseEvent.LeftUp )
 			};
 
-			SendInputWrapper.SendMouseInput( input.ToArray() );
+			SendMouseInput( input.ToArray() );
 		}
 
 		public void RightClick( int x, int y )
@@ -107,7 +117,7 @@ namespace UserInputMacro
 				CreateMouseInput( x, y, MouseEvent.RightUp )
 			};
 
-			SendInputWrapper.SendMouseInput( input.ToArray() );
+			SendMouseInput( input.ToArray() );
 		}
 
 		public void MiddleClick( int x, int y )
@@ -118,7 +128,12 @@ namespace UserInputMacro
 				CreateMouseInput( x, y, MouseEvent.MiddleUp )
 			};
 
-			SendInputWrapper.SendMouseInput( input.ToArray() );
+			SendMouseInput( input.ToArray() );
+		}
+
+		public void SetDebugMode( byte mode )
+		{
+			debugMode = ( DebugMode ) mode;
 		}
 
 		private static int GetAbsoluteCoodinateX( int coordX )
@@ -176,7 +191,26 @@ namespace UserInputMacro
 				CreateMouseInput( x, y, ev )
 			};
 
-			SendInputWrapper.SendMouseInput( input.ToArray() );
+			SendMouseInput( input.ToArray() );
+		}
+
+		private void SendMouseInput( MouseInput[] mouseInput )
+		{
+			if( !IsDebugMode( DebugMode.KeyOnly ) ) {
+				SendInputWrapper.SendMouseInput( mouseInput );
+			}
+		}
+
+		private void SendKeyInput( KeyInput[] mouseInput )
+		{
+			if( !IsDebugMode( DebugMode.MouseOnly ) ) {
+				SendInputWrapper.SendKeyInput( mouseInput );
+			}
+		}
+
+		private bool IsDebugMode( DebugMode mode )
+		{
+			return ( debugMode & mode ) == mode;
 		}
 	}
 }
