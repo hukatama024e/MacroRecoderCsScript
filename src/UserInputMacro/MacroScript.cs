@@ -201,10 +201,10 @@ namespace UserInputMacro
 			}
 		}
 
-		private void SendKeyInput( KeyInput[] mouseInput )
+		private void SendKeyInput( KeyInput[] keyInput )
 		{
 			if( !IsDebugMode( DebugMode.MouseOnly ) ) {
-				SendInputWrapper.SendKeyInput( mouseInput );
+				SendInputWrapper.SendKeyInput( keyInput );
 			}
 		}
 
