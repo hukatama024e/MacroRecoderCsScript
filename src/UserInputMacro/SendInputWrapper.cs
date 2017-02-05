@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using System.ComponentModel;
-using System.Windows.Input;
 
 namespace UserInputMacro
 {
@@ -10,18 +9,6 @@ namespace UserInputMacro
 
 		[ DllImport( "user32.dll", SetLastError = true ) ]
 		private static extern uint SendInput( uint inputNum, Input[] inputs, int inputStructSize );
-
-		public static void PressKey( Key key )
-		{
-			KeyInput[] keyInput = new KeyInput[ 1 ];
-
-			keyInput[ 0 ] = new KeyInput
-			{
-				virtualKey = ( ushort ) KeyInterop.VirtualKeyFromKey( key )
-			};
-
-			SendKeyInput( keyInput );
-		}
 
 		public static void SendMouseInput( MouseInput[] mouseInput )
 		{
