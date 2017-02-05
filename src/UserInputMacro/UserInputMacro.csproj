@@ -150,6 +150,7 @@
     </ApplicationDefinition>
     <Compile Include="HookEventID.cs" />
     <Compile Include="Input.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="MacroScript.cs" />
     <Compile Include="ScriptExecuter.cs" />
     <Compile Include="ScriptRecorder.cs" />

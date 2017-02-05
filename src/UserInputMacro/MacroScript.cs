@@ -12,7 +12,8 @@ namespace UserInputMacro
 		{
 			None = 0x00,
 			MouseOnly = 0x01,
-			KeyOnly = 0x02
+			KeyOnly = 0x02,
+			CreateLog = 0x04
 		};
 
 		private static readonly int COORDINATE_MAX = 65535;
@@ -196,6 +197,10 @@ namespace UserInputMacro
 
 		private void SendMouseInput( MouseInput[] mouseInput )
 		{
+			if( IsDebugMode( DebugMode.CreateLog )) {
+				Logger.WriteMouseInputInfo( mouseInput );
+			}
+
 			if( !IsDebugMode( DebugMode.KeyOnly ) ) {
 				SendInputWrapper.SendMouseInput( mouseInput );
 			}
@@ -203,6 +208,10 @@ namespace UserInputMacro
 
 		private void SendKeyInput( KeyInput[] keyInput )
 		{
+			if( IsDebugMode( DebugMode.CreateLog ) ) {
+				Logger.WriteKeyInputInfo( keyInput );
+			}
+
 			if( !IsDebugMode( DebugMode.MouseOnly ) ) {
 				SendInputWrapper.SendKeyInput( keyInput );
 			}
