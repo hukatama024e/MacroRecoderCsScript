@@ -64,38 +64,38 @@ namespace UserInputMacro
 			delayWatch.Reset();
 		}
 
-		private void RecordKeyLog( KeyHookStruct keyStr, int keyEvent )
+		private void RecordKeyLog( KeyHookStruct keyHookStr, int keyEvent )
 		{
 			recordScript.Append( $"Delay({delayWatch.ElapsedMilliseconds});\r\n" );
 			delayWatch.Restart();
 
-			recordScript.Append( ToKeyMacroFormat( keyStr, keyEvent ) );
+			recordScript.Append( ToKeyMacroFormat( keyHookStr, keyEvent ) );
 		}
 
-		private void RecordMouseLog( MouseHookStruct hookStr, int mouseEvent )
+		private void RecordMouseLog( MouseHookStruct mouseHookStr, int mouseEvent )
 		{
 			recordScript.Append( $"Delay({delayWatch.ElapsedMilliseconds});\r\n" );
 			delayWatch.Restart();
 
-			recordScript.Append( ToMouseMacroFormat( hookStr, mouseEvent ) );
+			recordScript.Append( ToMouseMacroFormat( mouseHookStr, mouseEvent ) );
 		}
 
-		private string ToKeyMacroFormat( KeyHookStruct keyStr, int keyEvent )
+		private string ToKeyMacroFormat( KeyHookStruct keyHookStr, int keyEvent )
 		{
 			var funcName = KeyFuncDic[ keyEvent ];
 
-			return $"{funcName}({keyStr.virtualKey});\r\n";
+			return $"{funcName}({keyHookStr.virtualKey});\r\n";
 		}
 
-		private string ToMouseMacroFormat( MouseHookStruct hookStr, int mouseEvent )
+		private string ToMouseMacroFormat( MouseHookStruct mouseHookStr, int mouseEvent )
 		{
 			var funcName = MouseFuncDic[ mouseEvent ];
 
 			if( mouseEvent == HookEventID.WM_MOUSEWHEEL || mouseEvent == HookEventID.WM_MOUSEHWHEEL ) {
-				return $"{funcName}({hookStr.coordinatePoint.x}, {hookStr.coordinatePoint.y}, {GetWheelData( hookStr.mouseData )});\r\n";
+				return $"{funcName}({mouseHookStr.coordinatePoint.x}, {mouseHookStr.coordinatePoint.y}, {GetWheelData( mouseHookStr.mouseData )});\r\n";
 			}
 			else {
-				return $"{funcName}({hookStr.coordinatePoint.x}, {hookStr.coordinatePoint.y});\r\n";
+				return $"{funcName}({mouseHookStr.coordinatePoint.x}, {mouseHookStr.coordinatePoint.y});\r\n";
 			}
 		}
 

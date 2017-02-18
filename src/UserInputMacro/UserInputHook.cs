@@ -96,8 +96,8 @@ namespace UserInputMacro
 		private int KeyHookProc( int hookCode, IntPtr wParam, IntPtr lParam )
 		{
 			try {
-				var keyStruct = ( KeyHookStruct ) Marshal.PtrToStructure( lParam, typeof( KeyHookStruct ) );
-				KeyHook( keyStruct, wParam.ToInt32() );
+				var keyHookStr = ( KeyHookStruct ) Marshal.PtrToStructure( lParam, typeof( KeyHookStruct ) );
+				KeyHook( keyHookStr, wParam.ToInt32() );
 			}
 			catch( Exception ex ) {
 				HookErrorProc( ex );
@@ -109,8 +109,8 @@ namespace UserInputMacro
 		private int MouseHookProc( int hookCode, IntPtr wParam, IntPtr lParam )
 		{
 			try {
-				var mouseStruct = ( MouseHookStruct ) Marshal.PtrToStructure( lParam, typeof( MouseHookStruct ) );
-				MouseHook( mouseStruct, wParam.ToInt32() );
+				var mouseHookStr = ( MouseHookStruct ) Marshal.PtrToStructure( lParam, typeof( MouseHookStruct ) );
+				MouseHook( mouseHookStr, wParam.ToInt32() );
 			}
 			catch( Exception ex ) {
 				HookErrorProc( ex );
