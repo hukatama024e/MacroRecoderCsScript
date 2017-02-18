@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 
@@ -131,7 +132,7 @@ namespace UserInputMacro
 			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
 			var dpiWidth = src.CompositionTarget.TransformFromDevice.M11;
 
-			return ( int ) ( coordX / ( SystemParameters.PrimaryScreenWidth / dpiWidth ) * COORDINATE_MAX );
+			return ( int ) Math.Round( coordX * COORDINATE_MAX / ( SystemParameters.PrimaryScreenWidth / dpiWidth ), MidpointRounding.AwayFromZero );
 		}
 
 		private static int GetAbsoluteCoodinateY( int coordY )
@@ -139,7 +140,7 @@ namespace UserInputMacro
 			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
 			var dpiHeight = src.CompositionTarget.TransformFromDevice.M22;
 
-			return ( int ) ( coordY / ( SystemParameters.PrimaryScreenHeight / dpiHeight ) * COORDINATE_MAX );
+			return ( int ) Math.Round( coordY * COORDINATE_MAX / ( SystemParameters.PrimaryScreenHeight / dpiHeight ), MidpointRounding.AwayFromZero );
 		}
 
 		private KeyInput CreateKeyInput( ushort virtualKeyCode, KeyEvent ev )
