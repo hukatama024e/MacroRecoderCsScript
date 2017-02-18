@@ -43,6 +43,34 @@ namespace UserInputMacro
 			}
 		}
 
+		public static void WriteMouseEventInfo( MouseHookStruct mouseHookStr )
+		{
+			var labeledData = new Dictionary<string, string>
+			{
+				{ "Date",       GetDateLog()                              },
+				{ "LogKind",    "MouseEvent"                              },
+				{ "X",          mouseHookStr.coordinatePoint.x.ToString() },
+				{ "Y",          mouseHookStr.coordinatePoint.y.ToString() },
+				{ "MouseData",  mouseHookStr.mouseData.ToString()         },
+				{ "Flags",      mouseHookStr.flags.ToString()             }
+			};
+
+			AppendLog( labeledData );
+		}
+
+		public static void WriteKeyEventInfo( KeyHookStruct keyHookStr )
+		{
+			var labeledData = new Dictionary<string, string>
+			{
+				{ "Date",       GetDateLog()                                                      },
+				{ "LogKind",    "KeyEvent"                                                        },
+				{ "Key",        KeyInterop.KeyFromVirtualKey( keyHookStr.virtualKey ).ToString()  },
+				{ "Flags",      keyHookStr.flags.ToString()                                       }
+			};
+
+			AppendLog( labeledData );
+		}
+
 		private static string GetDateLog()
 		{
 			return DateTime.Now.ToString( DATE_FORMAT );

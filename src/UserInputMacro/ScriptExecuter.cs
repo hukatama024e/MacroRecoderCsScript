@@ -5,12 +5,45 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 
 namespace UserInputMacro
 {
-	class ScriptExecuter
+	static class ScriptExecuter
 	{
 		public static async Task ExecuteAsync( string scriptPath )
 		{
-			var script = CSharpScript.Create( File.ReadAllText( scriptPath ), ScriptOptions.Default, typeof( MacroScript ) );
-			await script.RunAsync( new MacroScript() );
+			using( var hook = new UserInputHook() ) {
+				HookSetting( hook );
+
+				var script = CSharpScript.Create( File.ReadAllText( scriptPath ), ScriptOptions.Default, typeof( MacroScript ) );
+				await script.RunAsync( new MacroScript() );
+			}
+		}
+
+		private static void LoggingMouseMacro( MouseHookStruct mouseHookStr, int mouseEvent )
+		{
+			if( CheckMode( ModeKind.CreateLog ) ) {
+				Logger.WriteMouseEventInfo( mouseHookStr );
+			}
+		}
+
+		private static void LoggingKeyMacro( KeyHookStruct keyHookStr, int keyEvent )
+		{
+			if( CheckMode( ModeKind.CreateLog ) ) {
+				Logger.WriteKeyEventInfo( keyHookStr );
+			}
+		}
+
+		private static void HookSetting( UserInputHook hook )
+		{
+			hook.MouseHook = LoggingMouseMacro;
+			hook.KeyHook = LoggingKeyMacro;
+
+			hook.RegisterKeyHook();
+			hook.RegisterMouseHook();
+		}
+
+		private static bool CheckMode( ModeKind mode )
+		{
+			var currentMode = AppEnvironment.GetInstance().GetMode();
+			return ( currentMode & mode ) == mode;
 		}
 	}
 }
