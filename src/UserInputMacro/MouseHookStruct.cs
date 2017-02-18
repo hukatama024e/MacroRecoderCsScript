@@ -5,6 +5,7 @@ namespace UserInputMacro
 	[Flags]
 	public enum LowLevelMouseEvent : uint
 	{
+		None = 0x00,
 		Injected = 0x01,
 		LowerIntegrityLevelInjected = 0x02
 	};

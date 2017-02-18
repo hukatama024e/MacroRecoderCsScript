@@ -5,6 +5,7 @@ namespace UserInputMacro
 	[Flags]
 	public enum LowLevelKeyEvent : uint
 	{
+		None = 0x00,
 		Extended = 0x01,
 		Injected = 0x10,
 		AltDown = 0x20,
