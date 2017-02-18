@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 
@@ -7,17 +6,7 @@ namespace UserInputMacro
 {
 	public class MacroScript
 	{
-		[Flags]
-		enum DebugMode : byte
-		{
-			None = 0x00,
-			MouseOnly = 0x01,
-			KeyOnly = 0x02,
-			CreateLog = 0x04
-		};
-
 		private static readonly int COORDINATE_MAX = 65535;
-		private DebugMode debugMode = DebugMode.None;
 
 		public void Delay( int millsecond )
 		{
@@ -132,9 +121,9 @@ namespace UserInputMacro
 			SendMouseInput( input.ToArray() );
 		}
 
-		public void SetDebugMode( byte mode )
+		public void SetMode( byte mode )
 		{
-			debugMode = ( DebugMode ) mode;
+			AppEnvironment.GetInstance().SetMode( ( ModeKind ) mode );
 		}
 
 		private static int GetAbsoluteCoodinateX( int coordX )
@@ -197,29 +186,30 @@ namespace UserInputMacro
 
 		private void SendMouseInput( MouseInput[] mouseInput )
 		{
-			if( IsDebugMode( DebugMode.CreateLog )) {
+			if( CheckMode( ModeKind.CreateLog )) {
 				Logger.WriteMouseInputInfo( mouseInput );
 			}
 
-			if( !IsDebugMode( DebugMode.KeyOnly ) ) {
+			if( !CheckMode( ModeKind.KeyOnly ) ) {
 				SendInputWrapper.SendMouseInput( mouseInput );
 			}
 		}
 
 		private void SendKeyInput( KeyInput[] keyInput )
 		{
-			if( IsDebugMode( DebugMode.CreateLog ) ) {
+			if( CheckMode( ModeKind.CreateLog ) ) {
 				Logger.WriteKeyInputInfo( keyInput );
 			}
 
-			if( !IsDebugMode( DebugMode.MouseOnly ) ) {
+			if( !CheckMode( ModeKind.MouseOnly ) ) {
 				SendInputWrapper.SendKeyInput( keyInput );
 			}
 		}
 
-		private bool IsDebugMode( DebugMode mode )
+		private bool CheckMode( ModeKind mode )
 		{
-			return ( debugMode & mode ) == mode;
+			var currentMode = AppEnvironment.GetInstance().GetMode();
+			return ( currentMode & mode ) == mode;
 		}
 	}
 }
