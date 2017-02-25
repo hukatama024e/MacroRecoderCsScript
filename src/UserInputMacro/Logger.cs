@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -75,6 +76,18 @@ namespace UserInputMacro
 				{ "Event",      keyEvent.ToString()                                               }
 			};
 
+			AppendLog( labeledData );
+		}
+
+		public static void WriteUserCustom( Dictionary<string, string> userCustomDic )
+		{
+			var labeledData = new Dictionary<string, string>
+			{
+				{ "Date",       GetDateLog() },
+				{ "LogKind",    "UserCustom" },
+			};
+
+			labeledData = labeledData.Concat( userCustomDic ).ToDictionary( dic => dic.Key, dic => dic.Value );
 			AppendLog( labeledData );
 		}
 

@@ -127,6 +127,11 @@ namespace UserInputMacro
 			AppEnvironment.GetInstance().SetMode( ( ModeKind ) mode );
 		}
 
+		public void WrileUserCustomLog( Dictionary<string, string> userCustomDic )
+		{
+			Logger.WriteUserCustom( userCustomDic ); 
+		}
+
 		private static int GetAbsoluteCoodinateX( int coordX )
 		{
 			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
