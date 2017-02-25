@@ -48,7 +48,7 @@ namespace UserInputMacro
 			}
 		}
 
-		public static void WriteMouseEventInfo( MouseHookStruct mouseHookStr )
+		public static void WriteMouseEventInfo( MouseHookStruct mouseHookStr, MouseHookEvent mouseEvent )
 		{
 			var labeledData = new Dictionary<string, string>
 			{
@@ -57,20 +57,22 @@ namespace UserInputMacro
 				{ "X",          mouseHookStr.coordinatePoint.x.ToString() },
 				{ "Y",          mouseHookStr.coordinatePoint.y.ToString() },
 				{ "MouseData",  mouseHookStr.mouseData.ToString()         },
-				{ "Flags",      mouseHookStr.flags.ToString()             }
+				{ "Flags",      mouseHookStr.flags.ToString()             },
+				{ "Event",      mouseEvent.ToString()                     }
 			};
 
 			AppendLog( labeledData );
 		}
 
-		public static void WriteKeyEventInfo( KeyHookStruct keyHookStr )
+		public static void WriteKeyEventInfo( KeyHookStruct keyHookStr, KeyHookEvent keyEvent )
 		{
 			var labeledData = new Dictionary<string, string>
 			{
 				{ "Date",       GetDateLog()                                                      },
 				{ "LogKind",    "KeyEvent"                                                        },
 				{ "Key",        KeyInterop.KeyFromVirtualKey( keyHookStr.virtualKey ).ToString()  },
-				{ "Flags",      keyHookStr.flags.ToString()                                       }
+				{ "Flags",      keyHookStr.flags.ToString()                                       },
+				{ "Event",      keyEvent.ToString()                                               }
 			};
 
 			AppendLog( labeledData );

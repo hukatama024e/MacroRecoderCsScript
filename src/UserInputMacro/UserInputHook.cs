@@ -60,7 +60,7 @@ namespace UserInputMacro
 		public void RegisterKeyHook()
 		{
 			IntPtr module = Marshal.GetHINSTANCE( Assembly.GetExecutingAssembly().GetModules()[ 0 ] );
-			KeyHookHandle = SetWindowsHookEx( HookEventID.WH_KEYBOARD_LL, KeyHookCallback, module, 0 );
+			KeyHookHandle = SetWindowsHookEx( ( int )WindowsHookID.KeyBoardLowLevel, KeyHookCallback, module, 0 );
 
 			if( KeyHookHandle == IntPtr.Zero ) {
 				int errorCode = Marshal.GetLastWin32Error();
@@ -71,7 +71,7 @@ namespace UserInputMacro
 		public void RegisterMouseHook()
 		{
 			IntPtr module = Marshal.GetHINSTANCE( Assembly.GetExecutingAssembly().GetModules()[ 0 ] );
-			MouseHookHandle = SetWindowsHookEx( HookEventID.WH_MOUSE_LL, MouseHookCallback, module, 0 );
+			MouseHookHandle = SetWindowsHookEx( ( int )WindowsHookID.MouseLowLevel, MouseHookCallback, module, 0 );
 
 			if( MouseHookHandle == IntPtr.Zero ) {
 				int errorCode = Marshal.GetLastWin32Error();

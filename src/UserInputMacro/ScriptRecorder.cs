@@ -10,25 +10,25 @@ namespace UserInputMacro
 		private Stopwatch delayWatch;
 		private UserInputHook hook;
 
-		private static readonly Dictionary<int, string> MouseFuncDic = new Dictionary<int, string>()
+		private static readonly Dictionary<MouseHookEvent, string> MouseFuncDic = new Dictionary<MouseHookEvent, string>()
 		{
-			{ HookEventID.WM_MOUSEMOVE,   nameof( MacroScript.SetMousePos ) },
-			{ HookEventID.WM_LBUTTONDOWN, nameof( MacroScript.PushLeftButton ) },
-			{ HookEventID.WM_LBUTTONUP,   nameof( MacroScript.PullLeftButton ) },
-			{ HookEventID.WM_MOUSEWHEEL,  nameof( MacroScript.WheelMouse ) },
-			{ HookEventID.WM_MOUSEHWHEEL, nameof( MacroScript.HWheelMouse ) },
-			{ HookEventID.WM_RBUTTONDOWN, nameof( MacroScript.PushRightButton ) },
-			{ HookEventID.WM_RBUTTONUP,   nameof( MacroScript.PullRightButton ) },
-			{ HookEventID.WM_MBUTTONDOWN, nameof( MacroScript.PushMiddleButton ) },
-			{ HookEventID.WM_MBUTTONUP,   nameof( MacroScript.PullMiddleButton ) },
+			{ MouseHookEvent.Move,       nameof( MacroScript.SetMousePos ) },
+			{ MouseHookEvent.LeftDown,   nameof( MacroScript.PushLeftButton ) },
+			{ MouseHookEvent.LeftUp,     nameof( MacroScript.PullLeftButton ) },
+			{ MouseHookEvent.Wheel,      nameof( MacroScript.WheelMouse ) },
+			{ MouseHookEvent.Hwheel,     nameof( MacroScript.HWheelMouse ) },
+			{ MouseHookEvent.RightDown,  nameof( MacroScript.PushRightButton ) },
+			{ MouseHookEvent.RightUp,    nameof( MacroScript.PullRightButton ) },
+			{ MouseHookEvent.MiddleDown, nameof( MacroScript.PushMiddleButton ) },
+			{ MouseHookEvent.MiddleUp,   nameof( MacroScript.PullMiddleButton ) },
 		};
 
-		private static readonly Dictionary<int, string> KeyFuncDic = new Dictionary<int, string>()
+		private static readonly Dictionary<KeyHookEvent, string> KeyFuncDic = new Dictionary<KeyHookEvent, string>()
 		{
-			{ HookEventID.WM_KEYDOWN,    nameof( MacroScript.PressKey ) },
-			{ HookEventID.WM_KEYUP,      nameof( MacroScript.ReleaseKey ) },
-			{ HookEventID.WM_SYSKEYDOWN, nameof( MacroScript.PressKey ) },
-			{ HookEventID.WM_SYSKEYUP,   nameof( MacroScript.ReleaseKey ) },
+			{ KeyHookEvent.KeyDown,    nameof( MacroScript.PressKey ) },
+			{ KeyHookEvent.KeyUp,      nameof( MacroScript.ReleaseKey ) },
+			{ KeyHookEvent.SysKeyDown, nameof( MacroScript.PressKey ) },
+			{ KeyHookEvent.SysKeyUp,   nameof( MacroScript.ReleaseKey ) },
 		};
 
 		public string Record
@@ -69,7 +69,7 @@ namespace UserInputMacro
 			recordScript.Append( $"Delay({delayWatch.ElapsedMilliseconds});\r\n" );
 			delayWatch.Restart();
 
-			recordScript.Append( ToKeyMacroFormat( keyHookStr, keyEvent ) );
+			recordScript.Append( ToKeyMacroFormat( keyHookStr, ( KeyHookEvent ) keyEvent ) );
 		}
 
 		private void RecordMouseLog( MouseHookStruct mouseHookStr, int mouseEvent )
@@ -77,21 +77,21 @@ namespace UserInputMacro
 			recordScript.Append( $"Delay({delayWatch.ElapsedMilliseconds});\r\n" );
 			delayWatch.Restart();
 
-			recordScript.Append( ToMouseMacroFormat( mouseHookStr, mouseEvent ) );
+			recordScript.Append( ToMouseMacroFormat( mouseHookStr, ( MouseHookEvent ) mouseEvent ) );
 		}
 
-		private string ToKeyMacroFormat( KeyHookStruct keyHookStr, int keyEvent )
+		private string ToKeyMacroFormat( KeyHookStruct keyHookStr, KeyHookEvent keyEvent )
 		{
 			var funcName = KeyFuncDic[ keyEvent ];
 
 			return $"{funcName}({keyHookStr.virtualKey});\r\n";
 		}
 
-		private string ToMouseMacroFormat( MouseHookStruct mouseHookStr, int mouseEvent )
+		private string ToMouseMacroFormat( MouseHookStruct mouseHookStr, MouseHookEvent mouseEvent )
 		{
 			var funcName = MouseFuncDic[ mouseEvent ];
 
-			if( mouseEvent == HookEventID.WM_MOUSEWHEEL || mouseEvent == HookEventID.WM_MOUSEHWHEEL ) {
+			if( mouseEvent == MouseHookEvent.Wheel || mouseEvent == MouseHookEvent.Hwheel ) {
 				return $"{funcName}({mouseHookStr.coordinatePoint.x}, {mouseHookStr.coordinatePoint.y}, {GetWheelData( mouseHookStr.mouseData )});\r\n";
 			}
 			else {

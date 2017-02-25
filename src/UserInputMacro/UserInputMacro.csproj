@@ -148,7 +148,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="HookEventID.cs" />
+    <Compile Include="WindowHookEvent.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MacroScript.cs" />

@@ -20,14 +20,14 @@ namespace UserInputMacro
 		private static void LoggingMouseMacro( MouseHookStruct mouseHookStr, int mouseEvent )
 		{
 			if( CheckMode( ModeKind.CreateLog ) ) {
-				Logger.WriteMouseEventInfo( mouseHookStr );
+				Logger.WriteMouseEventInfo( mouseHookStr, ( MouseHookEvent ) mouseEvent );
 			}
 		}
 
 		private static void LoggingKeyMacro( KeyHookStruct keyHookStr, int keyEvent )
 		{
 			if( CheckMode( ModeKind.CreateLog ) ) {
-				Logger.WriteKeyEventInfo( keyHookStr );
+				Logger.WriteKeyEventInfo( keyHookStr, ( KeyHookEvent ) keyEvent );
 			}
 		}
 
