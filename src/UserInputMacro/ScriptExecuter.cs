@@ -42,7 +42,7 @@ namespace UserInputMacro
 
 		private static bool CheckMode( ModeKind mode )
 		{
-			var currentMode = AppEnvironment.GetInstance().GetMode();
+			var currentMode = AppEnvironment.GetInstance().Mode;
 			return ( currentMode & mode ) == mode;
 		}
 	}

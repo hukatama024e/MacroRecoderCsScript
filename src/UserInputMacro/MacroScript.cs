@@ -124,7 +124,7 @@ namespace UserInputMacro
 
 		public void SetMode( byte mode )
 		{
-			AppEnvironment.GetInstance().SetMode( ( ModeKind ) mode );
+			AppEnvironment.GetInstance().Mode = ( ModeKind ) mode;
 		}
 
 		public void WrileUserCustomLog( Dictionary<string, string> userCustomDic )
@@ -214,7 +214,7 @@ namespace UserInputMacro
 
 		private bool CheckMode( ModeKind mode )
 		{
-			var currentMode = AppEnvironment.GetInstance().GetMode();
+			var currentMode = AppEnvironment.GetInstance().Mode;
 			return ( currentMode & mode ) == mode;
 		}
 	}

@@ -14,7 +14,7 @@ namespace UserInputMacro
 	class AppEnvironment
 	{
 		private static AppEnvironment instance = new AppEnvironment();
-		private ModeKind mode = ModeKind.None;
+		public ModeKind Mode { get; set; } = ModeKind.None;
 
 		private AppEnvironment()
 		{
@@ -23,16 +23,6 @@ namespace UserInputMacro
 		public static AppEnvironment GetInstance()
 		{
 			return instance;
-		}
-
-		public ModeKind GetMode()
-		{
-			return mode;
-		}
-
-		public void SetMode( ModeKind kind )
-		{
-			mode = kind;
 		}
 	}
 }
