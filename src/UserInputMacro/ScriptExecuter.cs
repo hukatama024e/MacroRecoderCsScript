@@ -19,14 +19,14 @@ namespace UserInputMacro
 
 		private static void LoggingMouseMacro( MouseHookStruct mouseHookStr, int mouseEvent )
 		{
-			if( CheckMode( ModeKind.CreateLog ) ) {
+			if( CommonUtil.CheckMode( ModeKind.CreateLog ) ) {
 				Logger.WriteMouseEventInfo( mouseHookStr, ( MouseHookEvent ) mouseEvent );
 			}
 		}
 
 		private static void LoggingKeyMacro( KeyHookStruct keyHookStr, int keyEvent )
 		{
-			if( CheckMode( ModeKind.CreateLog ) ) {
+			if( CommonUtil.CheckMode( ModeKind.CreateLog ) ) {
 				Logger.WriteKeyEventInfo( keyHookStr, ( KeyHookEvent ) keyEvent );
 			}
 		}
@@ -38,12 +38,6 @@ namespace UserInputMacro
 
 			hook.RegisterKeyHook();
 			hook.RegisterMouseHook();
-		}
-
-		private static bool CheckMode( ModeKind mode )
-		{
-			var currentMode = AppEnvironment.GetInstance().Mode;
-			return ( currentMode & mode ) == mode;
 		}
 	}
 }

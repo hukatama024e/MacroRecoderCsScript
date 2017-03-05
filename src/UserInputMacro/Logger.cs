@@ -117,18 +117,12 @@ namespace UserInputMacro
 
 		private static int GetRelativeCoodinateX( int coordX )
 		{
-			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
-			var dpiWidth = src.CompositionTarget.TransformFromDevice.M11;
-
-			return ( int ) ( coordX * ( SystemParameters.PrimaryScreenWidth / dpiWidth ) / COORDINATE_MAX );
+			return ( int ) ( coordX * ( SystemParameters.PrimaryScreenWidth / CommonUtil.GetDpiWidth() ) / COORDINATE_MAX );
 		}
 
 		private static int GetRelativeCoodinateY( int coordY )
 		{
-			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
-			var dpiHeight = src.CompositionTarget.TransformFromDevice.M22;
-
-			return ( int ) ( coordY * ( SystemParameters.PrimaryScreenHeight / dpiHeight ) / COORDINATE_MAX );
+			return ( int ) ( coordY * ( SystemParameters.PrimaryScreenHeight / CommonUtil.GetDpiHeight() ) / COORDINATE_MAX );
 		}
 	}
 }

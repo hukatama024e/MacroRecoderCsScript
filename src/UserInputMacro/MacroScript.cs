@@ -134,18 +134,14 @@ namespace UserInputMacro
 
 		private static int GetAbsoluteCoodinateX( int coordX )
 		{
-			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
-			var dpiWidth = src.CompositionTarget.TransformFromDevice.M11;
-
-			return ( int ) Math.Round( coordX * COORDINATE_MAX / ( SystemParameters.PrimaryScreenWidth / dpiWidth ), MidpointRounding.AwayFromZero );
+			return ( int ) Math.Round( coordX * COORDINATE_MAX /
+				( SystemParameters.PrimaryScreenWidth / CommonUtil.GetDpiWidth() ), MidpointRounding.AwayFromZero );
 		}
 
 		private static int GetAbsoluteCoodinateY( int coordY )
 		{
-			var src = PresentationSource.FromVisual( Application.Current.MainWindow );
-			var dpiHeight = src.CompositionTarget.TransformFromDevice.M22;
-
-			return ( int ) Math.Round( coordY * COORDINATE_MAX / ( SystemParameters.PrimaryScreenHeight / dpiHeight ), MidpointRounding.AwayFromZero );
+			return ( int ) Math.Round( coordY * COORDINATE_MAX /
+				( SystemParameters.PrimaryScreenHeight / CommonUtil.GetDpiHeight() ), MidpointRounding.AwayFromZero );
 		}
 
 		private KeyInput CreateKeyInput( ushort virtualKeyCode, KeyEvent ev )
@@ -192,30 +188,24 @@ namespace UserInputMacro
 
 		private void SendMouseInput( MouseInput[] mouseInput )
 		{
-			if( CheckMode( ModeKind.CreateLog )) {
+			if( CommonUtil.CheckMode( ModeKind.CreateLog )) {
 				Logger.WriteMouseInputInfo( mouseInput );
 			}
 
-			if( !CheckMode( ModeKind.KeyOnly ) ) {
+			if( !CommonUtil.CheckMode( ModeKind.KeyOnly ) ) {
 				SendInputWrapper.SendMouseInput( mouseInput );
 			}
 		}
 
 		private void SendKeyInput( KeyInput[] keyInput )
 		{
-			if( CheckMode( ModeKind.CreateLog ) ) {
+			if( CommonUtil.CheckMode( ModeKind.CreateLog ) ) {
 				Logger.WriteKeyInputInfo( keyInput );
 			}
 
-			if( !CheckMode( ModeKind.MouseOnly ) ) {
+			if( !CommonUtil.CheckMode( ModeKind.MouseOnly ) ) {
 				SendInputWrapper.SendKeyInput( keyInput );
 			}
-		}
-
-		private bool CheckMode( ModeKind mode )
-		{
-			var currentMode = AppEnvironment.GetInstance().Mode;
-			return ( currentMode & mode ) == mode;
 		}
 	}
 }
