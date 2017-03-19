@@ -43,7 +43,8 @@ namespace UserInputMacro
 			hook = new UserInputHook
 			{
 				KeyHook = RecordKeyLog,
-				MouseHook = RecordMouseLog
+				MouseHook = RecordMouseLog,
+				HookErrorProc = CommonUtil.HandleException
 			};
 		}
 

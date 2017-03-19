@@ -28,23 +28,42 @@ namespace UserInputMacro
 
 		private void RecordCmdBinding_CanExecute( object sender, CanExecuteRoutedEventArgs e )
 		{
-			e.CanExecute = !buttonState.IsRecording && !buttonState.IsPlaying;
+			try {
+				e.CanExecute = !buttonState.IsRecording && !buttonState.IsPlaying;
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
-
 		private void PlayCmdBinding_CanExecute( object sender, CanExecuteRoutedEventArgs e )
 		{
-			e.CanExecute = !buttonState.IsRecording && !buttonState.IsPlaying;
+			try {
+				e.CanExecute = !buttonState.IsRecording && !buttonState.IsPlaying;
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		private void StopCmdBinding_CanExecute( object sender, CanExecuteRoutedEventArgs e )
 		{
-			e.CanExecute = buttonState.IsRecording || buttonState.IsPlaying;
+			try {
+				e.CanExecute = buttonState.IsRecording || buttonState.IsPlaying;
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		private void RecordCmdBinding_Executed( object sender, ExecutedRoutedEventArgs e )
 		{
-			buttonState.IsRecording = true;
-			recorder.StartRecording();
+			try {
+				buttonState.IsRecording = true;
+				recorder.StartRecording();
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		private async void PlayCmdBinding_ExecutedAsync( object sender, ExecutedRoutedEventArgs e )
@@ -53,42 +72,52 @@ namespace UserInputMacro
 				await ScriptExecuter.ExecuteAsync( scriptPath.Text );
 			}
 			catch( Exception ex ) {
-				MessageBox.Show( ex.ToString(), "Error" );
+				CommonUtil.HandleException( ex );
 			}
 		}
 
 		private void StopCmdBinding_Executed( object sender, ExecutedRoutedEventArgs e )
 		{
-			recorder.EndRecording();
-			buttonState.IsRecording = false;
+			try {
+				recorder.EndRecording();
+				buttonState.IsRecording = false;
 
-			var dialog = new SaveFileDialog()
-			{
-				Title = "Save macro script",
-				Filter = "Script File(*.csx)|*.csx|All files (*.*) |*.*",
-				FilterIndex = 1
-			};
+				var dialog = new SaveFileDialog()
+				{
+					Title = "Save macro script",
+					Filter = "Script File(*.csx)|*.csx|All files (*.*) |*.*",
+					FilterIndex = 1
+				};
 
-			if( dialog.ShowDialog() == true ) {
-				using( var fs = dialog.OpenFile() ) {
-					using( var sw = new StreamWriter( fs ) ) {
-						sw.Write( recorder.Record );
+				if( dialog.ShowDialog() == true ) {
+					using( var fs = dialog.OpenFile() ) {
+						using( var sw = new StreamWriter( fs ) ) {
+							sw.Write( recorder.Record );
+						}
 					}
 				}
+			}
+			catch( Exception ex) {
+				CommonUtil.HandleException( ex );
 			}
 		}
 
 		private void BrowseButton_Click( object sender, RoutedEventArgs e )
 		{
-			var dialog = new OpenFileDialog()
-			{
-				Title = "Open macro script",
-				Filter = "Script File(*.csx)|*.csx|All files (*.*) |*.*",
-				FilterIndex = 1
-			};
+			try {
+				var dialog = new OpenFileDialog()
+				{
+					Title = "Open macro script",
+					Filter = "Script File(*.csx)|*.csx|All files (*.*) |*.*",
+					FilterIndex = 1
+				};
 
-			if( dialog.ShowDialog() == true ) {
-				scriptPath.Text = dialog.FileName;
+				if( dialog.ShowDialog() == true ) {
+					scriptPath.Text = dialog.FileName;
+				}
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
 			}
 		}
 	}

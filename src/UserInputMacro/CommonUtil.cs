@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -20,6 +21,15 @@ namespace UserInputMacro
 		public static double GetDpiHeight()
 		{
 			return GetTransform().M11;
+		}
+
+		public static void HandleException( Exception ex )
+		{
+			Logger.WriteErrorLog( ex );
+			MessageBox.Show( ex.ToString(), "Error" );
+
+			// for executing destructor of hook
+			GC.Collect();
 		}
 
 		private static Matrix GetTransform()

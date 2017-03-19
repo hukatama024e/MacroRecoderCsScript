@@ -11,125 +11,210 @@ namespace UserInputMacro
 
 		public void Delay( int millsecond )
 		{
-			Thread.Sleep( millsecond );
+			try {
+				Thread.Sleep( millsecond );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void PressKey( ushort virtualKey )
 		{
-			var input = new List<KeyInput>
-			{
-				CreateKeyInput( virtualKey, KeyEvent.None )
-			};
+			try {
+				var input = new List<KeyInput>
+				{
+					CreateKeyInput( virtualKey, KeyEvent.None )
+				};
 
-			SendKeyInput( input.ToArray() );
+				SendKeyInput( input.ToArray() );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void ReleaseKey( ushort virtualKey )
 		{
-			var input = new List<KeyInput>
-			{
-				CreateKeyInput( virtualKey, KeyEvent.KeyUp )
-			};
+			try {
+				var input = new List<KeyInput>
+				{
+					CreateKeyInput( virtualKey, KeyEvent.KeyUp )
+				};
 
-			SendKeyInput( input.ToArray() );
+				SendKeyInput( input.ToArray() );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void SetMousePos( int x, int y )
 		{
-			SendSingleMouseEvent( x, y, MouseEvent.Move );
+			try {
+				SendSingleMouseEvent( x, y, MouseEvent.Move );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		} 
 
 		public void PushLeftButton( int x, int y )
 		{
-			SendSingleMouseEvent( x, y, MouseEvent.LeftDown );
+			try {
+				SendSingleMouseEvent( x, y, MouseEvent.LeftDown );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void PullLeftButton( int x, int y )
 		{
-			SendSingleMouseEvent( x, y, MouseEvent.LeftUp );
+			try {
+				SendSingleMouseEvent( x, y, MouseEvent.LeftUp );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void PushMiddleButton( int x, int y )
 		{
-			SendSingleMouseEvent( x, y, MouseEvent.MiddleDown );
+			try {
+				SendSingleMouseEvent( x, y, MouseEvent.MiddleDown );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void PullMiddleButton( int x, int y )
 		{
-			SendSingleMouseEvent( x, y, MouseEvent.MiddleDown );
+			try {
+				SendSingleMouseEvent( x, y, MouseEvent.MiddleUp );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void PushRightButton( int x, int y )
 		{
-			SendSingleMouseEvent( x, y, MouseEvent.RightDown );
+			try {
+				SendSingleMouseEvent( x, y, MouseEvent.RightDown );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void PullRightButton( int x, int y )
 		{
-			SendSingleMouseEvent( x, y, MouseEvent.RightUp );
+			try {
+				SendSingleMouseEvent( x, y, MouseEvent.RightUp );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void WheelMouse( int x, int y, int wheelRotate )
 		{
-			var input = new List<MouseInput>
-			{
-				CreateMouseWheel( x, y, MouseEvent.Wheel, wheelRotate ),
-			};
+			try {
+				var input = new List<MouseInput>
+				{
+					CreateMouseWheel( x, y, MouseEvent.Wheel, wheelRotate ),
+				};
 
-			SendMouseInput( input.ToArray() );
+				SendMouseInput( input.ToArray() );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void HWheelMouse( int x, int y, int wheelRotate )
 		{
-			var input = new List<MouseInput>
-			{
-				CreateMouseWheel( x, y, MouseEvent.Hwheel, wheelRotate ),
-			};
+			try {
+				var input = new List<MouseInput>
+				{
+					CreateMouseWheel( x, y, MouseEvent.Hwheel, wheelRotate ),
+				};
 
-			SendMouseInput( input.ToArray() );
+				SendMouseInput( input.ToArray() );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void LeftClick( int x, int y )
 		{
-			var input = new List<MouseInput>
-			{
-				CreateMouseInput( x, y, MouseEvent.LeftDown ),
-				CreateMouseInput( x, y, MouseEvent.LeftUp )
-			};
+			try {
+				var input = new List<MouseInput>
+				{
+					CreateMouseInput( x, y, MouseEvent.LeftDown ),
+					CreateMouseInput( x, y, MouseEvent.LeftUp )
+				};
 
-			SendMouseInput( input.ToArray() );
+				SendMouseInput( input.ToArray() );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void RightClick( int x, int y )
 		{
-			var input = new List<MouseInput>
-			{
-				CreateMouseInput( x, y, MouseEvent.RightDown ),
-				CreateMouseInput( x, y, MouseEvent.RightUp )
-			};
+			try {
+				var input = new List<MouseInput>
+				{
+					CreateMouseInput( x, y, MouseEvent.RightDown ),
+					CreateMouseInput( x, y, MouseEvent.RightUp )
+				};
 
-			SendMouseInput( input.ToArray() );
+				SendMouseInput( input.ToArray() );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void MiddleClick( int x, int y )
 		{
-			var input = new List<MouseInput>
-			{
-				CreateMouseInput( x, y, MouseEvent.MiddleDown ),
-				CreateMouseInput( x, y, MouseEvent.MiddleUp )
-			};
+			try {
+				var input = new List<MouseInput>
+				{
+					CreateMouseInput( x, y, MouseEvent.MiddleDown ),
+					CreateMouseInput( x, y, MouseEvent.MiddleUp )
+				};
 
-			SendMouseInput( input.ToArray() );
+				SendMouseInput( input.ToArray() );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void SetMode( byte mode )
 		{
-			AppEnvironment.GetInstance().Mode = ( ModeKind ) mode;
+			try {
+				AppEnvironment.GetInstance().Mode = ( ModeKind ) mode;
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		public void WrileUserCustomLog( Dictionary<string, string> userCustomDic )
 		{
-			Logger.WriteUserCustom( userCustomDic ); 
+			try {
+				Logger.WriteUserCustom( userCustomDic );
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
+			}
 		}
 
 		private static int GetAbsoluteCoodinateX( int coordX )

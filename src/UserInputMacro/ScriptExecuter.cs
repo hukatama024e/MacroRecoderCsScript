@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
@@ -9,11 +10,16 @@ namespace UserInputMacro
 	{
 		public static async Task ExecuteAsync( string scriptPath )
 		{
-			using( var hook = new UserInputHook() ) {
-				HookSetting( hook );
+			try {
+				using( var hook = new UserInputHook() ) {
+					HookSetting( hook );
 
-				var script = CSharpScript.Create( File.ReadAllText( scriptPath ), ScriptOptions.Default, typeof( MacroScript ) );
-				await script.RunAsync( new MacroScript() );
+					var script = CSharpScript.Create( File.ReadAllText( scriptPath ), ScriptOptions.Default, typeof( MacroScript ) );
+					await script.RunAsync( new MacroScript() );
+				}
+			}
+			catch( Exception ex ) {
+				CommonUtil.HandleException( ex );
 			}
 		}
 
@@ -35,6 +41,7 @@ namespace UserInputMacro
 		{
 			hook.MouseHook = LoggingMouseMacro;
 			hook.KeyHook = LoggingKeyMacro;
+			hook.HookErrorProc = CommonUtil.HandleException;
 
 			hook.RegisterKeyHook();
 			hook.RegisterMouseHook();
