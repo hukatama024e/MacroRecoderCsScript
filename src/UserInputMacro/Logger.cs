@@ -11,7 +11,9 @@ namespace UserInputMacro
 	class Logger
 	{
 		private static readonly string DATE_FORMAT = "yyyy/MM/dd HH:mm:ss.fff";
-		private static readonly string FILE_NAME = "Log.txt";
+		private static readonly string INPUT_LOG_NAME = "input_log.txt";
+		private static readonly string ERROR_LOG_NAME = "error_log.txt";
+
 		private static readonly int COORDINATE_MAX = 65535;
 
 		public static void WriteMouseInputInfo( MouseInput[] mouseInput )
@@ -30,7 +32,7 @@ namespace UserInputMacro
 					{ "Flags",      singleInput.flags.ToString()       }
 				};
 
-				AppendLog( labeledData );
+				AppendInputLog( labeledData );
 			}
 		}
 
@@ -45,7 +47,7 @@ namespace UserInputMacro
 					{ "Flags",      singleInput.flags.ToString()			                          }
 				};
 
-				AppendLog( labeledData );
+				AppendInputLog( labeledData );
 			}
 		}
 
@@ -62,7 +64,7 @@ namespace UserInputMacro
 				{ "Event",      mouseEvent.ToString()                     }
 			};
 
-			AppendLog( labeledData );
+			AppendInputLog( labeledData );
 		}
 
 		public static void WriteKeyEventInfo( KeyHookStruct keyHookStr, KeyHookEvent keyEvent )
@@ -76,7 +78,7 @@ namespace UserInputMacro
 				{ "Event",      keyEvent.ToString()                                               }
 			};
 
-			AppendLog( labeledData );
+			AppendInputLog( labeledData );
 		}
 
 		public static void WriteUserCustom( Dictionary<string, string> userCustomDic )
@@ -88,7 +90,20 @@ namespace UserInputMacro
 			};
 
 			labeledData = labeledData.Concat( userCustomDic ).ToDictionary( dic => dic.Key, dic => dic.Value );
-			AppendLog( labeledData );
+			AppendInputLog( labeledData );
+		}
+
+		public static void WriteErrorLog( Exception ex )
+		{
+			var labeledData = new Dictionary<string, string>
+			{
+				{ "Date",       GetDateLog()  },
+				{ "Message",    ex.Message    },
+				{ "Source",     ex.Source     },
+				{ "StackTrace", ex.StackTrace },
+			};
+
+			AppendErrorLog( labeledData );
 		}
 
 		private static string GetDateLog()
@@ -96,9 +111,14 @@ namespace UserInputMacro
 			return DateTime.Now.ToString( DATE_FORMAT );
 		}
 
-		private static void AppendLog( Dictionary<string, string> labeledData )
+		private static void AppendInputLog( Dictionary<string, string> labeledData )
 		{
-			File.AppendAllText( FILE_NAME, CreateLtsvLog( labeledData ) + Environment.NewLine );
+			File.AppendAllText( INPUT_LOG_NAME, CreateLtsvLog( labeledData ) + Environment.NewLine );
+		}
+
+		private static void AppendErrorLog( Dictionary<string, string> labeledData )
+		{
+			File.AppendAllText( ERROR_LOG_NAME, CreateLtsvLog( labeledData ) + Environment.NewLine );
 		}
 
 		private static string CreateLtsvLog( Dictionary<string, string> labeledData )
