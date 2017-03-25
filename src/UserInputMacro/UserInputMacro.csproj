@@ -148,7 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncDelegateCommand.cs" />
     <Compile Include="CommonUtil.cs" />
+    <Compile Include="DelegateCommandcs.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="WindowHookEvent.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Logger.cs" />

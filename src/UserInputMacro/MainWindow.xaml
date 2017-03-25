@@ -6,41 +6,30 @@
         xmlns:local="clr-namespace:UserInputMacro"
         mc:Ignorable="d"
         Title="UserInputMacro" Height="101.867" Width="414.6">
-    <Window.CommandBindings>
-        <CommandBinding
-            Command="{x:Static local:MainWindow.RecordCommand}"
-            Executed="RecordCmdBinding_Executed"
-            CanExecute="RecordCmdBinding_CanExecute" />
-        <CommandBinding
-            Command="{x:Static local:MainWindow.PlayCommand}" 
-            Executed="PlayCmdBinding_ExecutedAsync"
-            CanExecute="PlayCmdBinding_CanExecute" />
-        <CommandBinding
-            Command="{x:Static local:MainWindow.StopCommand}" 
-            Executed="StopCmdBinding_Executed"
-            CanExecute="StopCmdBinding_CanExecute" />
-    </Window.CommandBindings>
     <Grid>
         <Button x:Name="recordButton" Content="Record"
                 HorizontalAlignment="Left" Margin="10,10,0,0"
                 VerticalAlignment="Top" Width="75"
-                Command="{x:Static local:MainWindow.RecordCommand}" />
+                Command="{Binding RecordCommand}" />
 
         <Button x:Name="playButton" Content="Play"
                 HorizontalAlignment="Left" Margin="90,10,0,0"
                 VerticalAlignment="Top" Width="75"
-                Command="{x:Static local:MainWindow.PlayCommand}" />
+                Command="{Binding PlayCommand}" />
 
         <Button x:Name="stopButton" Content="Stop"
                 HorizontalAlignment="Left" Margin="170,10,0,0"
                 VerticalAlignment="Top" Width="75"
-                Command="{x:Static local:MainWindow.StopCommand}" />
+                Command="{Binding StopCommand}" />
+
+        <Button x:Name="browseButton" Content="Browse"
+                HorizontalAlignment="Left" Margin="268,40,0,0"
+                VerticalAlignment="Top" Width="75"
+                Command="{Binding BrowseCommand}" />
 
         <TextBox x:Name="scriptPath" HorizontalAlignment="Left"
-                 Margin="90,40,0,0" TextWrapping="NoWrap" Width="173" VerticalAlignment="Top" Height="19"/>
+                 Margin="90,40,0,0" TextWrapping="NoWrap" Width="173" VerticalAlignment="Top" Height="19" Text="{Binding ScriptPath}"/>
         <TextBlock x:Name="scriptPathText" HorizontalAlignment="Left"
                    Margin="19,40,0,0" TextWrapping="Wrap" Text="Script Path" VerticalAlignment="Top" Width="66" Height="19"/>
-        <Button x:Name="browseButton" Content="Browse" HorizontalAlignment="Left"
-                Margin="268,40,0,0" VerticalAlignment="Top" Width="75" Click="BrowseButton_Click"/>
     </Grid>
 </Window>
