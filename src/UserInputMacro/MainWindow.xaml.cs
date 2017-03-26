@@ -7,10 +7,13 @@ namespace UserInputMacro
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private MainWindowViewModel userModel = new MainWindowViewModel();
 		public MainWindow()
 		{
-			DataContext = new MainWindowViewModel();
+			DataContext = userModel;
 			InitializeComponent();
+
+			userModel.WinDispacher = Application.Current.Dispatcher;
 		}
 	}
 }
