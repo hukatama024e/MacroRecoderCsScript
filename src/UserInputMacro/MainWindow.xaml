@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UserInputMacro"
         mc:Ignorable="d"
-        Title="UserInputMacro" Height="101.867" Width="414.6">
+        Title="UserInputMacro" Height="301.867" Width="414.6">
     <Grid>
         <Button x:Name="recordButton" Content="Record"
                 HorizontalAlignment="Left" Margin="10,10,0,0"
@@ -31,5 +31,7 @@
                  Margin="90,40,0,0" TextWrapping="NoWrap" Width="173" VerticalAlignment="Top" Height="19" Text="{Binding ScriptPath}"/>
         <TextBlock x:Name="scriptPathText" HorizontalAlignment="Left"
                    Margin="19,40,0,0" TextWrapping="Wrap" Text="Script Path" VerticalAlignment="Top" Width="66" Height="19"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="177" Margin="10,75,0,0" TextWrapping="Wrap"
+                 Text="{Binding ErrorMessage}" VerticalAlignment="Top" Width="380" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>

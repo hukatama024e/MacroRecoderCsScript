@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Microsoft.Win32;
-using System;
 using System.Windows.Input;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace UserInputMacro
 {
@@ -13,8 +14,11 @@ namespace UserInputMacro
 		private ButtonState buttonState;
 		private ScriptRecorder recorder;
 		private string scriptPath;
+		private string errorMessage;
 
 		private static readonly PropertyChangedEventArgs scriptPathChangedEventArgs = new PropertyChangedEventArgs( nameof( ScriptPath ) );
+		private static readonly PropertyChangedEventArgs errorMessageChangedEventArgs = new PropertyChangedEventArgs( nameof( ErrorMessage ) );
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public DelegateCommand RecordCommand { get; set; }
@@ -37,6 +41,19 @@ namespace UserInputMacro
 			}
 		}
 
+		public string ErrorMessage
+		{
+			get { return errorMessage; }
+			set {
+				if( errorMessage == value ) {
+					return;
+				}
+
+				errorMessage = value;
+				PropertyChanged?.Invoke( this, errorMessageChangedEventArgs );
+			}
+		}
+
 		public MainWindowViewModel()
 		{
 			buttonState = new ButtonState();
@@ -46,6 +63,8 @@ namespace UserInputMacro
 			StopCommand = new DelegateCommand( StopCmd_Execute, StopCmd_CanExecute );
 			BrowseCommand = new DelegateCommand( BrowseCmd_Execute );
 			PlayCommand = new AsyncDelegateCommand( PlayCmd_ExecuteAsync, PlayCmd_CanExecute );
+
+			ErrorMessage = "[Message]" + Environment.NewLine + "If expected error occur, view to this text box.";
 		}
 
 		private bool RecordCmd_CanExecute()
@@ -71,11 +90,27 @@ namespace UserInputMacro
 
 		private async Task PlayCmd_ExecuteAsync()
 		{
-			buttonState.IsPlaying = true;
-			await Task.Delay( 50 );
-			WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
+			if( !File.Exists( scriptPath ) ) {
+				ErrorMessage = "[File Error]" + Environment.NewLine + "'" + scriptPath + "' is not found.";
+				return;
+			}
 
-			await ScriptExecuter.ExecuteAsync( ScriptPath );
+			ErrorMessage = "";
+
+			try {
+				buttonState.IsPlaying = true;
+				await Task.Delay( 50 );
+				WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
+
+				await ScriptExecuter.ExecuteAsync( ScriptPath );
+			}
+			catch( CompilationErrorException ex ) {
+				ErrorMessage = "[Compile Error]" + Environment.NewLine + ex.Message;
+			}
+			catch( Exception ) {
+				throw;
+			}
+
 			buttonState.IsPlaying = false;
 		}
 
