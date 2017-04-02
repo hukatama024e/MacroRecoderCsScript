@@ -15,6 +15,7 @@ namespace UserInputMacro
 	{
 		private static AppEnvironment instance = new AppEnvironment();
 		public ModeKind Mode { get; set; } = ModeKind.None;
+		public bool IsConsoleMode { get; set; } = true;
 
 		private AppEnvironment()
 		{

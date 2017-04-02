@@ -2,11 +2,20 @@
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Runtime.InteropServices;
 
 namespace UserInputMacro
 {
 	class CommonUtil
 	{
+		const int ATTACH_PARENT_PROCESS = -1;
+
+		[DllImport( "Kernel32.dll" )]
+		private static extern bool AttachConsole( int processId );
+
+		[DllImport( "Kernel32.dll" )]
+		private static extern bool FreeConsole();
+
 		public static bool CheckMode( ModeKind mode )
 		{
 			var currentMode = AppEnvironment.GetInstance().Mode;
@@ -26,10 +35,23 @@ namespace UserInputMacro
 		public static void HandleException( Exception ex )
 		{
 			Logger.WriteErrorLog( ex );
-			MessageBox.Show( ex.ToString(), "Error" );
+
+			if( AppEnvironment.GetInstance().IsConsoleMode ) {
+				WriteToConsole( ex.ToString() );
+			}
+			else {
+				MessageBox.Show( ex.ToString(), "Error" );
+			}
 
 			// for executing destructor of hook
 			GC.Collect();
+		}
+
+		public static void WriteToConsole( string str )
+		{
+			AttachConsole( ATTACH_PARENT_PROCESS );
+			Console.WriteLine( str );
+			FreeConsole();
 		}
 
 		private static Matrix GetTransform()

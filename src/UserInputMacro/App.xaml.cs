@@ -1,7 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Text.RegularExpressions;
-using System.Runtime.InteropServices;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace UserInputMacro
 {
@@ -10,16 +11,12 @@ namespace UserInputMacro
 	/// </summary>
 	public partial class App : Application
 	{
-		[DllImport( "Kernel32.dll" )]
-		private	 static extern bool AttachConsole( int processId );
-
-		const int ATTACH_PARENT_PROCESS = -1;
-
 		private async void Application_StartupAsync( object sender, StartupEventArgs e )
 		{
 			try {
 				// when no arguments are specified, execute main window 
 				if( e.Args.Length == 0 ) {
+					AppEnvironment.GetInstance().IsConsoleMode = false;
 					var window = new MainWindow();
 					window.Show();
 					return;
@@ -32,14 +29,23 @@ namespace UserInputMacro
 				Match argsChacker = scriptArgPattern.Match( e.Args[ 0 ] );
 
 				if( argsChacker.Success ) {
-					await ScriptExecuter.ExecuteAsync( argsChacker.Groups[ "scriptPath" ].Value );
+					string filePath = argsChacker.Groups[ "scriptPath" ].Value;
+					if( File.Exists( filePath ) ){
+						await ScriptExecuter.ExecuteAsync( filePath );
+					}
+					else {
+						CommonUtil.WriteToConsole( "[File Error]" + Environment.NewLine + "'" + filePath + "' is not found." );
+					}
 				}
 				else {
 					Usage();
 				}
 			}
+			catch( CompilationErrorException ex ) {
+				CommonUtil.WriteToConsole( "[Compile Error]" + Environment.NewLine + ex.Message );
+			}
 			catch( Exception ex ) {
-				Console.WriteLine( ex );
+				CommonUtil.HandleException( ex );
 			}
 
 			Current.Shutdown();
@@ -47,10 +53,9 @@ namespace UserInputMacro
 
 		private void Usage()
 		{
-			AttachConsole( ATTACH_PARENT_PROCESS );
-			Console.WriteLine( "Usage: UserInputMacro <option>" );
-			Console.WriteLine( "[option list]" );
-			Console.WriteLine( "script=<scirpt path>: Command line mode and only execute script" );
+			CommonUtil.WriteToConsole( "Usage: UserInputMacro <option>" + Environment.NewLine +
+										"[option]" + Environment.NewLine +
+										"-script=<scirpt path>: Command line mode and only execute script" );
 		}
 	}
 }
