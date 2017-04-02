@@ -44,5 +44,5 @@ Under construction...
 
 [latest release]: https://github.com/hukatama024e/UserInputMacro/releases
 [Screen Shot]:    Image/readme_screenshot.png
-[MIT License]:    LICENSE.txt
+[MIT License]:    LICENSE
 
