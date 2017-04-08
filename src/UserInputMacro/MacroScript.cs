@@ -149,54 +149,6 @@ namespace UserInputMacro
 			}
 		}
 
-		public void LeftClick( int x, int y )
-		{
-			try {
-				var input = new List<MouseInput>
-				{
-					CreateMouseInput( x, y, MouseEvent.LeftDown ),
-					CreateMouseInput( x, y, MouseEvent.LeftUp )
-				};
-
-				SendMouseInput( input.ToArray() );
-			}
-			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
-			}
-		}
-
-		public void RightClick( int x, int y )
-		{
-			try {
-				var input = new List<MouseInput>
-				{
-					CreateMouseInput( x, y, MouseEvent.RightDown ),
-					CreateMouseInput( x, y, MouseEvent.RightUp )
-				};
-
-				SendMouseInput( input.ToArray() );
-			}
-			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
-			}
-		}
-
-		public void MiddleClick( int x, int y )
-		{
-			try {
-				var input = new List<MouseInput>
-				{
-					CreateMouseInput( x, y, MouseEvent.MiddleDown ),
-					CreateMouseInput( x, y, MouseEvent.MiddleUp )
-				};
-
-				SendMouseInput( input.ToArray() );
-			}
-			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
-			}
-		}
-
 		public void SetMode( byte mode )
 		{
 			try {
