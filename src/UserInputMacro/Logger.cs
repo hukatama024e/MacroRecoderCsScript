@@ -137,12 +137,12 @@ namespace UserInputMacro
 
 		private static int GetRelativeCoodinateX( int coordX )
 		{
-			return ( int ) ( coordX * ( SystemParameters.PrimaryScreenWidth / CommonUtil.GetDpiWidth() ) / COORDINATE_MAX );
+			return ( int ) ( coordX * ( SystemParameters.PrimaryScreenWidth / AppEnvironment.GetInstance().DpiWidth ) / COORDINATE_MAX );
 		}
 
 		private static int GetRelativeCoodinateY( int coordY )
 		{
-			return ( int ) ( coordY * ( SystemParameters.PrimaryScreenHeight / CommonUtil.GetDpiHeight() ) / COORDINATE_MAX );
+			return ( int ) ( coordY * ( SystemParameters.PrimaryScreenHeight / AppEnvironment.GetInstance().DpiHeight ) / COORDINATE_MAX );
 		}
 	}
 }

@@ -172,13 +172,13 @@ namespace UserInputMacro
 		private static int GetAbsoluteCoodinateX( int coordX )
 		{
 			return ( int ) Math.Round( coordX * COORDINATE_MAX /
-				( SystemParameters.PrimaryScreenWidth / CommonUtil.GetDpiWidth() ), MidpointRounding.AwayFromZero );
+				( SystemParameters.PrimaryScreenWidth / AppEnvironment.GetInstance().DpiWidth ), MidpointRounding.AwayFromZero );
 		}
 
 		private static int GetAbsoluteCoodinateY( int coordY )
 		{
 			return ( int ) Math.Round( coordY * COORDINATE_MAX /
-				( SystemParameters.PrimaryScreenHeight / CommonUtil.GetDpiHeight() ), MidpointRounding.AwayFromZero );
+				( SystemParameters.PrimaryScreenHeight / AppEnvironment.GetInstance().DpiHeight ), MidpointRounding.AwayFromZero );
 		}
 
 		private KeyInput CreateKeyInput( ushort virtualKeyCode, KeyEvent ev )

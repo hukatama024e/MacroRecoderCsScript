@@ -13,6 +13,7 @@ namespace UserInputMacro
 			DataContext = userModel;
 			InitializeComponent();
 
+			AppEnvironment.GetInstance().DpiSetting();
 			userModel.WinDispacher = Application.Current.Dispatcher;
 		}
 	}

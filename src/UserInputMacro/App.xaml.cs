@@ -31,6 +31,7 @@ namespace UserInputMacro
 				if( argsChacker.Success ) {
 					string filePath = argsChacker.Groups[ "scriptPath" ].Value;
 					if( File.Exists( filePath ) ){
+						AppEnvironment.GetInstance().DpiSetting();
 						await ScriptExecuter.ExecuteAsync( filePath );
 					}
 					else {
