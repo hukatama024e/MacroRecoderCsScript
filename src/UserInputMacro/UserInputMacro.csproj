@@ -149,6 +149,7 @@
     <Compile Include="CommonUtil.cs" />
     <Compile Include="DelegateCommandcs.cs" />
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="WindowHookEvent.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Logger.cs" />

@@ -10,22 +10,12 @@ namespace UserInputMacro
 		private IntPtr KeyHookHandle { get; set; }
 		private IntPtr MouseHookHandle { get; set; }
 
-		private delegate int HookProc( int hookCode, IntPtr wParam, IntPtr lParam );
-		private HookProc KeyHookCallback { get; set; }
-		private HookProc MouseHookCallback { get; set; }
+		private NativeMethods.HookProc KeyHookCallback { get; set; }
+		private NativeMethods.HookProc MouseHookCallback { get; set; }
 
 		public Action<KeyHookStruct, int> KeyHook { get; set; }
 		public Action<MouseHookStruct, int> MouseHook { get; set; }
 		public Action<Exception> HookErrorProc { get; set; }
-
-		[DllImport( "user32.dll", SetLastError = true )]
-		private static extern IntPtr SetWindowsHookEx( int hookEventId, [MarshalAs( UnmanagedType.FunctionPtr )] HookProc hook, IntPtr module, uint threadId );
-
-		[DllImport( "user32.dll", SetLastError = true )]
-		private static extern bool UnhookWindowsHookEx( IntPtr hookHandle );
-
-		[DllImport( "user32.dll", SetLastError = true )]
-		private static extern int CallNextHookEx( IntPtr hookHandle, int hookCode, IntPtr wParam, IntPtr lParam );
 
 		public UserInputHook()
 		{
@@ -60,7 +50,7 @@ namespace UserInputMacro
 		public void RegisterKeyHook()
 		{
 			IntPtr module = Marshal.GetHINSTANCE( Assembly.GetExecutingAssembly().GetModules()[ 0 ] );
-			KeyHookHandle = SetWindowsHookEx( ( int )WindowsHookID.KeyBoardLowLevel, KeyHookCallback, module, 0 );
+			KeyHookHandle = NativeMethods.SetWindowsHookEx( ( int )WindowsHookID.KeyBoardLowLevel, KeyHookCallback, module, 0 );
 
 			if( KeyHookHandle == IntPtr.Zero ) {
 				int errorCode = Marshal.GetLastWin32Error();
@@ -71,7 +61,7 @@ namespace UserInputMacro
 		public void RegisterMouseHook()
 		{
 			IntPtr module = Marshal.GetHINSTANCE( Assembly.GetExecutingAssembly().GetModules()[ 0 ] );
-			MouseHookHandle = SetWindowsHookEx( ( int )WindowsHookID.MouseLowLevel, MouseHookCallback, module, 0 );
+			MouseHookHandle = NativeMethods.SetWindowsHookEx( ( int )WindowsHookID.MouseLowLevel, MouseHookCallback, module, 0 );
 
 			if( MouseHookHandle == IntPtr.Zero ) {
 				int errorCode = Marshal.GetLastWin32Error();
@@ -82,14 +72,14 @@ namespace UserInputMacro
 		public void UnregisterMouseHook()
 		{
 			if( MouseHookHandle != IntPtr.Zero ) {
-				UnhookWindowsHookEx( MouseHookHandle );
+				NativeMethods.UnhookWindowsHookEx( MouseHookHandle );
 			}
 		}
 
 		public void UnregisterKeyHook()
 		{
 			if( KeyHookHandle != IntPtr.Zero ) {
-				UnhookWindowsHookEx( KeyHookHandle );
+				NativeMethods.UnhookWindowsHookEx( KeyHookHandle );
 			}
 		}
 
@@ -103,7 +93,7 @@ namespace UserInputMacro
 				HookErrorProc( ex );
 			}
 
-			return CallNextHookEx( KeyHookHandle, hookCode, wParam, lParam );
+			return NativeMethods.CallNextHookEx( KeyHookHandle, hookCode, wParam, lParam );
 		}
 
 		private int MouseHookProc( int hookCode, IntPtr wParam, IntPtr lParam )
@@ -116,7 +106,7 @@ namespace UserInputMacro
 				HookErrorProc( ex );
 			}
 
-			return CallNextHookEx( KeyHookHandle, hookCode, wParam, lParam );
+			return NativeMethods.CallNextHookEx( KeyHookHandle, hookCode, wParam, lParam );
 		}
 	}
 }

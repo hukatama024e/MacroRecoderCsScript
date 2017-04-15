@@ -2,20 +2,11 @@
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Runtime.InteropServices;
 
 namespace UserInputMacro
 {
 	class CommonUtil
 	{
-		const int ATTACH_PARENT_PROCESS = -1;
-
-		[DllImport( "Kernel32.dll" )]
-		private static extern bool AttachConsole( int processId );
-
-		[DllImport( "Kernel32.dll" )]
-		private static extern bool FreeConsole();
-
 		public static bool CheckMode( ModeKind mode )
 		{
 			var currentMode = AppEnvironment.GetInstance().Mode;
@@ -49,9 +40,9 @@ namespace UserInputMacro
 
 		public static void WriteToConsole( string str )
 		{
-			AttachConsole( ATTACH_PARENT_PROCESS );
+			NativeMethods.AttachConsole( NativeMethods.ATTACH_PARENT_PROCESS );
 			Console.WriteLine( str );
-			FreeConsole();
+			NativeMethods.FreeConsole();
 		}
 
 		private static Matrix GetTransform()

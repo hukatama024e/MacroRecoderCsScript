@@ -5,11 +5,6 @@ namespace UserInputMacro
 {
 	public static class SendInputWrapper
 	{
-		private static readonly int FAIL_SENDINPUT = 0;
-
-		[ DllImport( "user32.dll", SetLastError = true ) ]
-		private static extern uint SendInput( uint inputNum, Input[] inputs, int inputStructSize );
-
 		public static void SendMouseInput( MouseInput[] mouseInput )
 		{
 			uint result;
@@ -21,9 +16,9 @@ namespace UserInputMacro
 				input[ i ].inputInfo.mouseInput = mouseInput[ i ];
 			}
 
-			result = SendInput( ( uint ) input.Length, input, Marshal.SizeOf( input[ 0 ] ) );
+			result = NativeMethods.SendInput( ( uint ) input.Length, input, Marshal.SizeOf( input[ 0 ] ) );
 
-			if( result == FAIL_SENDINPUT ) {
+			if( result == NativeMethods.SEND_INPUT_FAILED ) {
 				int errorCode = Marshal.GetLastWin32Error();
 				throw new Win32Exception( errorCode );
 			}
@@ -40,9 +35,9 @@ namespace UserInputMacro
 				input[ i ].inputInfo.keyInput = keyInput[ i ];
 			}
 
-			result = SendInput( ( uint ) input.Length, input, Marshal.SizeOf( input[ 0 ] ) );
+			result = NativeMethods.SendInput( ( uint ) input.Length, input, Marshal.SizeOf( input[ 0 ] ) );
 
-			if( result == FAIL_SENDINPUT ) {
+			if( result == NativeMethods.SEND_INPUT_FAILED ) {
 				int errorCode = Marshal.GetLastWin32Error();
 				throw new Win32Exception( errorCode );
 			}
