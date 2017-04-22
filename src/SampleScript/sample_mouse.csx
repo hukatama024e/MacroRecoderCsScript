@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 [Flags]
 enum DebugMode : byte
@@ -10,45 +11,46 @@ enum DebugMode : byte
 	CreateLog = 0x04
 };
 
-SetMode( ( byte )DebugMode.MouseOnly | ( byte )DebugMode.CreateLog );
+await SetMode( ( byte )DebugMode.MouseOnly | ( byte )DebugMode.CreateLog );
 
-SetCoordinate(100, 100);
-SetCoordinate(200, 100);
-SetCoordinate(300, 100);
-SetCoordinate(400, 100);
-SetCoordinate(500, 100);
-SetCoordinate(600, 100);
-SetCoordinate(700, 100);
-SetCoordinate(800, 100);
-SetCoordinate(900, 100);
-SetCoordinate(1000, 100);
+await SetCoordinate(100, 100);
+await SetCoordinate(200, 100);
+await SetCoordinate(300, 100);
+await SetCoordinate(400, 100);
+await SetCoordinate(500, 100);
+await SetCoordinate(600, 100);
+await SetCoordinate(700, 100);
+await SetCoordinate(800, 100);
+await SetCoordinate(900, 100);
+await SetCoordinate(1000, 100);
 
-WriteCustomLog( "test custom log" );
+await WriteCustomLog( "test custom log" );
 
-SetCoordinate(900, 100);
-SetCoordinate(800, 100);
-SetCoordinate(700, 100);
-SetCoordinate(600, 100);
-SetCoordinate(500, 100);
-SetCoordinate(400, 100);
-SetCoordinate(300, 100);
-SetCoordinate(200, 100);
-SetCoordinate(100, 100);
+await SetCoordinate(900, 100);
+await SetCoordinate(800, 100);
+await SetCoordinate(700, 100);
+await SetCoordinate(600, 100);
+await SetCoordinate(500, 100);
+await SetCoordinate(400, 100);
+await SetCoordinate(300, 100);
+await SetCoordinate(200, 100);
+await SetCoordinate(100, 100);
 
-void SetCoordinate( int x, int y )
+async Task SetCoordinate( int x, int y )
 {
-	SetMousePos( x, y );
-	Delay( 100 );
+	await SetMousePos( x, y );
+	await Delay( 100 );
 }
 
-void WriteCustomLog( string message )
+async Task WriteCustomLog( string message )
 {
-	var userCustomDic = new Dictionary<string, string>
-	{
-		{ "ScriptName", "sample_mouse" },
-		{ "Message",    message        }
-	};
+	await Task.Run( () => {
+		var userCustomDic = new Dictionary<string, string>
+		{
+			{ "ScriptName", "sample_mouse" },
+			{ "Message",    message        }
+		};
 	
-	WrileUserCustomLog( userCustomDic );
-
+		WrileUserCustomLog( userCustomDic );
+	} );
 }

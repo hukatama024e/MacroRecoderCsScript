@@ -51,7 +51,7 @@ namespace UserInputMacro
 				await ExcecuteAsync();
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 

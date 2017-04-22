@@ -99,7 +99,6 @@ namespace UserInputMacro
 
 			try {
 				buttonState.IsPlaying = true;
-				await Task.Delay( 50 );
 				WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
 
 				await ScriptExecuter.ExecuteAsync( ScriptPath );
@@ -112,6 +111,8 @@ namespace UserInputMacro
 			}
 
 			buttonState.IsPlaying = false;
+			WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
+
 		}
 
 		private void StopCmd_Execute()

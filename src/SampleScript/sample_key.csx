@@ -1,6 +1,7 @@
 #r "PresentationCore"
 
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 enum DebugMode : byte
@@ -11,26 +12,26 @@ enum DebugMode : byte
 	CreateLog = 0x04
 };
 
-SetMode( ( byte )DebugMode.KeyOnly | ( byte )DebugMode.CreateLog );
+await SetMode( ( byte )DebugMode.KeyOnly | ( byte )DebugMode.CreateLog );
 
-Process.Start( "Notepad" );
-Delay(500);
+await Task.Run( () => { Process.Start( "Notepad" ); } );
+await Delay(500);
 
-KeyInput( Key.A );
-PressKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftShift ) );
-KeyInput( Key.B );
-KeyInput( Key.C );
-ReleaseKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftShift ) );
-PressKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftCtrl ) );
-KeyInput( Key.S );
-ReleaseKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftCtrl ) );
+await KeyInput( Key.A );
+await PressKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftShift ) );
+await KeyInput( Key.B );
+await KeyInput( Key.C );
+await ReleaseKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftShift ) );
+await PressKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftCtrl ) );
+await KeyInput( Key.S );
+await ReleaseKey( (ushort)KeyInterop.VirtualKeyFromKey( Key.LeftCtrl ) );
 
-void KeyInput( Key key )
+async Task KeyInput( Key key )
 {
 	ushort virtualKey = (ushort)KeyInterop.VirtualKeyFromKey( key );
 
-	PressKey( virtualKey );
-	Delay( 100 );
-	ReleaseKey( virtualKey );
-	Delay( 100 );
+	await PressKey( virtualKey );
+	await Delay( 100 );
+	await ReleaseKey( virtualKey );
+	await Delay( 100 );
 }

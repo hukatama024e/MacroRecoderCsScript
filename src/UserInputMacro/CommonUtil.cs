@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace UserInputMacro
@@ -11,10 +12,27 @@ namespace UserInputMacro
 			return ( currentMode & mode ) == mode;
 		}
 
+		public async static Task HandleExceptionAsync( Exception ex )
+		{
+			await Logger.WriteErrorLogAsync( ex );
+			await Task.Run( () => ProcessException( ex ) );
+		}
+
 		public static void HandleException( Exception ex )
 		{
 			Logger.WriteErrorLog( ex );
+			ProcessException( ex );
+		}
 
+		public static void WriteToConsole( string str )
+		{
+			NativeMethods.AttachConsole( NativeMethods.ATTACH_PARENT_PROCESS );
+			Console.WriteLine( str );
+			NativeMethods.FreeConsole();
+		}
+
+		private static void ProcessException( Exception ex )
+		{
 			if( AppEnvironment.GetInstance().IsConsoleMode ) {
 				WriteToConsole( ex.ToString() );
 			}
@@ -24,13 +42,6 @@ namespace UserInputMacro
 
 			// for executing destructor of hook
 			GC.Collect();
-		}
-
-		public static void WriteToConsole( string str )
-		{
-			NativeMethods.AttachConsole( NativeMethods.ATTACH_PARENT_PROCESS );
-			Console.WriteLine( str );
-			NativeMethods.FreeConsole();
 		}
 	}
 }

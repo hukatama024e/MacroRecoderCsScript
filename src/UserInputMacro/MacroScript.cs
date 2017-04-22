@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace UserInputMacro
@@ -9,17 +9,17 @@ namespace UserInputMacro
 	{
 		private static readonly int COORDINATE_MAX = 65535;
 
-		public void Delay( int millsecond )
+		public async Task Delay( int millsecond )
 		{
 			try {
-				Thread.Sleep( millsecond );
+				await Task.Delay( millsecond );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void PressKey( ushort virtualKey )
+		public async Task PressKey( ushort virtualKey )
 		{
 			try {
 				var input = new List<KeyInput>
@@ -27,14 +27,14 @@ namespace UserInputMacro
 					CreateKeyInput( virtualKey, KeyEvent.None )
 				};
 
-				SendKeyInput( input.ToArray() );
+				await SendKeyInput( input.ToArray() );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void ReleaseKey( ushort virtualKey )
+		public async Task ReleaseKey( ushort virtualKey )
 		{
 			try {
 				var input = new List<KeyInput>
@@ -42,84 +42,84 @@ namespace UserInputMacro
 					CreateKeyInput( virtualKey, KeyEvent.KeyUp )
 				};
 
-				SendKeyInput( input.ToArray() );
+				await SendKeyInput( input.ToArray() );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void SetMousePos( int x, int y )
+		public async Task SetMousePos( int x, int y )
 		{
 			try {
-				SendSingleMouseEvent( x, y, MouseEvent.Move );
+				await GetSingleMouseEventTask( x, y, MouseEvent.Move );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		} 
 
-		public void PushLeftButton( int x, int y )
+		public async Task PushLeftButton( int x, int y )
 		{
 			try {
-				SendSingleMouseEvent( x, y, MouseEvent.LeftDown );
+				await GetSingleMouseEventTask( x, y, MouseEvent.LeftDown );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void PullLeftButton( int x, int y )
+		public async Task PullLeftButton( int x, int y )
 		{
 			try {
-				SendSingleMouseEvent( x, y, MouseEvent.LeftUp );
+				await GetSingleMouseEventTask( x, y, MouseEvent.LeftUp );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void PushMiddleButton( int x, int y )
+		public async Task PushMiddleButton( int x, int y )
 		{
 			try {
-				SendSingleMouseEvent( x, y, MouseEvent.MiddleDown );
+				await GetSingleMouseEventTask( x, y, MouseEvent.MiddleDown );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void PullMiddleButton( int x, int y )
+		public async Task PullMiddleButton( int x, int y )
 		{
 			try {
-				SendSingleMouseEvent( x, y, MouseEvent.MiddleUp );
+				await GetSingleMouseEventTask( x, y, MouseEvent.MiddleUp );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void PushRightButton( int x, int y )
+		public async Task PushRightButton( int x, int y )
 		{
 			try {
-				SendSingleMouseEvent( x, y, MouseEvent.RightDown );
+				await GetSingleMouseEventTask( x, y, MouseEvent.RightDown );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void PullRightButton( int x, int y )
+		public async Task PullRightButton( int x, int y )
 		{
 			try {
-				SendSingleMouseEvent( x, y, MouseEvent.RightUp );
+				await GetSingleMouseEventTask( x, y, MouseEvent.RightUp );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void WheelMouse( int x, int y, int wheelRotate )
+		public async Task WheelMouse( int x, int y, int wheelRotate )
 		{
 			try {
 				var input = new List<MouseInput>
@@ -127,14 +127,14 @@ namespace UserInputMacro
 					CreateMouseWheel( x, y, MouseEvent.Wheel, wheelRotate ),
 				};
 
-				SendMouseInput( input.ToArray() );
+				await SendMouseInput( input.ToArray() );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void HWheelMouse( int x, int y, int wheelRotate )
+		public async Task HWheelMouse( int x, int y, int wheelRotate )
 		{
 			try {
 				var input = new List<MouseInput>
@@ -142,30 +142,33 @@ namespace UserInputMacro
 					CreateMouseWheel( x, y, MouseEvent.Hwheel, wheelRotate ),
 				};
 
-				SendMouseInput( input.ToArray() );
+				await SendMouseInput( input.ToArray() );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void SetMode( byte mode )
+		public async Task SetMode( byte mode )
 		{
 			try {
-				AppEnvironment.GetInstance().Mode = ( ModeKind ) mode;
+				await Task.Run( () => 
+				{
+					AppEnvironment.GetInstance().Mode = ( ModeKind ) mode;
+				} );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
-		public void WrileUserCustomLog( Dictionary<string, string> userCustomDic )
+		public async Task WrileUserCustomLog( Dictionary<string, string> userCustomDic )
 		{
 			try {
-				Logger.WriteUserCustom( userCustomDic );
+				await Logger.WriteUserCustomAsync( userCustomDic );
 			}
 			catch( Exception ex ) {
-				CommonUtil.HandleException( ex );
+				await CommonUtil.HandleExceptionAsync( ex );
 			}
 		}
 
@@ -213,35 +216,35 @@ namespace UserInputMacro
 			return input;
 		}
 
-		private void SendSingleMouseEvent( int x, int y, MouseEvent ev )
+		private async Task GetSingleMouseEventTask( int x, int y, MouseEvent ev )
 		{
 			var input = new List<MouseInput>
 			{
 				CreateMouseInput( x, y, ev )
 			};
 
-			SendMouseInput( input.ToArray() );
+			await SendMouseInput( input.ToArray() );
 		}
 
-		private void SendMouseInput( MouseInput[] mouseInput )
+		private async Task SendMouseInput( MouseInput[] mouseInput )
 		{
 			if( CommonUtil.CheckMode( ModeKind.CreateLog )) {
-				Logger.WriteMouseInputInfo( mouseInput );
+				await Logger.WriteMouseInputAsync( mouseInput );
 			}
 
 			if( !CommonUtil.CheckMode( ModeKind.KeyOnly ) ) {
-				SendInputWrapper.SendMouseInput( mouseInput );
+				await Task.Run( () => SendInputWrapper.SendMouseInput( mouseInput ) );
 			}
 		}
 
-		private void SendKeyInput( KeyInput[] keyInput )
+		private async Task SendKeyInput( KeyInput[] keyInput )
 		{
 			if( CommonUtil.CheckMode( ModeKind.CreateLog ) ) {
-				Logger.WriteKeyInputInfo( keyInput );
+				await Logger.WriteKeyInputAsync( keyInput );
 			}
 
 			if( !CommonUtil.CheckMode( ModeKind.MouseOnly ) ) {
-				SendInputWrapper.SendKeyInput( keyInput );
+				await Task.Run( () => SendInputWrapper.SendKeyInput( keyInput ) );
 			}
 		}
 	}

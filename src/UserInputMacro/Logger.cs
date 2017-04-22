@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace UserInputMacro
 {
@@ -16,7 +17,7 @@ namespace UserInputMacro
 
 		private static readonly int COORDINATE_MAX = 65535;
 
-		public static void WriteMouseInputInfo( MouseInput[] mouseInput )
+		public async static Task WriteMouseInputAsync( MouseInput[] mouseInput )
 		{
 			foreach( var singleInput in mouseInput ) {
 				int x = GetRelativeCoodinateX( singleInput.coordinateX );
@@ -32,11 +33,11 @@ namespace UserInputMacro
 					{ "Flags",      singleInput.flags.ToString()       }
 				};
 
-				AppendInputLog( labeledData );
+				await AppendLogAsync( INPUT_LOG_NAME, labeledData );
 			}
 		}
 
-		public static void WriteKeyInputInfo( KeyInput[] keyInput )
+		public async static Task WriteKeyInputAsync( KeyInput[] keyInput )
 		{
 			foreach( var singleInput in keyInput ) {
 				var labeledData = new Dictionary<string, string>
@@ -47,11 +48,58 @@ namespace UserInputMacro
 					{ "Flags",      singleInput.flags.ToString()			                          }
 				};
 
-				AppendInputLog( labeledData );
+				await AppendLogAsync( INPUT_LOG_NAME, labeledData );
 			}
 		}
 
-		public static void WriteMouseEventInfo( MouseHookStruct mouseHookStr, MouseHookEvent mouseEvent )
+		public static void WriteMouseEvent( MouseHookStruct mouseHookStr, MouseHookEvent mouseEvent )
+		{
+			AppendLog( INPUT_LOG_NAME, CreateMouseEventLog( mouseHookStr, mouseEvent ) );
+		}
+
+		public static void WriteKeyEvent( KeyHookStruct keyHookStr, KeyHookEvent keyEvent )
+		{
+			AppendLog( INPUT_LOG_NAME, CreateKeyEventLog( keyHookStr, keyEvent ) );
+		}
+
+		public static void WriteErrorLog( Exception ex )
+		{
+			AppendLog( ERROR_LOG_NAME, CreateErrorLog( ex ) );
+		}
+
+		public async static Task WriteMouseEventAsync( MouseHookStruct mouseHookStr, MouseHookEvent mouseEvent )
+		{
+			await AppendLogAsync( INPUT_LOG_NAME, CreateMouseEventLog( mouseHookStr, mouseEvent ) );
+		}
+
+		public async static Task WriteKeyEventAsync( KeyHookStruct keyHookStr, KeyHookEvent keyEvent )
+		{
+			await AppendLogAsync( INPUT_LOG_NAME, CreateKeyEventLog( keyHookStr, keyEvent ) );
+		}
+
+		public async static Task WriteUserCustomAsync( Dictionary<string, string> userCustomDic )
+		{
+			var labeledData = new Dictionary<string, string>
+			{
+				{ "Date",       GetDateLog() },
+				{ "LogKind",    "UserCustom" },
+			};
+
+			labeledData = labeledData.Concat( userCustomDic ).ToDictionary( dic => dic.Key, dic => dic.Value );
+			await AppendLogAsync( INPUT_LOG_NAME, labeledData );
+		}
+
+		public async static Task WriteErrorLogAsync( Exception ex )
+		{
+			await AppendLogAsync( ERROR_LOG_NAME, CreateErrorLog( ex ) );
+		}
+
+		private static string GetDateLog()
+		{
+			return DateTime.Now.ToString( DATE_FORMAT );
+		}
+
+		private static Dictionary<string, string> CreateMouseEventLog( MouseHookStruct mouseHookStr, MouseHookEvent mouseEvent )
 		{
 			var labeledData = new Dictionary<string, string>
 			{
@@ -64,10 +112,10 @@ namespace UserInputMacro
 				{ "Event",      mouseEvent.ToString()                     }
 			};
 
-			AppendInputLog( labeledData );
+			return labeledData;
 		}
 
-		public static void WriteKeyEventInfo( KeyHookStruct keyHookStr, KeyHookEvent keyEvent )
+		private static Dictionary<string, string> CreateKeyEventLog( KeyHookStruct keyHookStr, KeyHookEvent keyEvent )
 		{
 			var labeledData = new Dictionary<string, string>
 			{
@@ -78,22 +126,10 @@ namespace UserInputMacro
 				{ "Event",      keyEvent.ToString()                                               }
 			};
 
-			AppendInputLog( labeledData );
+			return labeledData;
 		}
 
-		public static void WriteUserCustom( Dictionary<string, string> userCustomDic )
-		{
-			var labeledData = new Dictionary<string, string>
-			{
-				{ "Date",       GetDateLog() },
-				{ "LogKind",    "UserCustom" },
-			};
-
-			labeledData = labeledData.Concat( userCustomDic ).ToDictionary( dic => dic.Key, dic => dic.Value );
-			AppendInputLog( labeledData );
-		}
-
-		public static void WriteErrorLog( Exception ex )
+		private static Dictionary<string, string> CreateErrorLog( Exception ex )
 		{
 			var labeledData = new Dictionary<string, string>
 			{
@@ -103,22 +139,25 @@ namespace UserInputMacro
 				{ "StackTrace", ex.StackTrace },
 			};
 
-			AppendErrorLog( labeledData );
+			return labeledData;
 		}
 
-		private static string GetDateLog()
+		private async static Task AppendLogAsync( string pass, Dictionary<string, string> labeledData )
 		{
-			return DateTime.Now.ToString( DATE_FORMAT );
+			using( var fs = new FileStream( pass, FileMode.Append, FileAccess.Write, FileShare.ReadWrite ) ) {
+				using( var sw = new StreamWriter( fs ) ) {
+					await sw.WriteLineAsync( CreateLtsvLog( labeledData ) );
+				}
+			}
 		}
 
-		private static void AppendInputLog( Dictionary<string, string> labeledData )
+		private static void AppendLog( string pass, Dictionary<string, string> labeledData )
 		{
-			File.AppendAllText( INPUT_LOG_NAME, CreateLtsvLog( labeledData ) + Environment.NewLine );
-		}
-
-		private static void AppendErrorLog( Dictionary<string, string> labeledData )
-		{
-			File.AppendAllText( ERROR_LOG_NAME, CreateLtsvLog( labeledData ) + Environment.NewLine );
+			using( var fs = new FileStream( pass, FileMode.Append, FileAccess.Write, FileShare.ReadWrite ) ) {
+				using( var sw = new StreamWriter( fs ) ) {
+					sw.WriteLine( CreateLtsvLog( labeledData ) );
+				}
+			}
 		}
 
 		private static string CreateLtsvLog( Dictionary<string, string> labeledData )
