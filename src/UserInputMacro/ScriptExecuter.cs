@@ -27,7 +27,7 @@ namespace UserInputMacro
 		private static void LoggingKeyMacro( KeyHookStruct keyHookStr, int keyEvent )
 		{
 			if( CommonUtil.CheckMode( ModeKind.CreateLog ) ) {
-				Logger.WriteKeyEventAsync( keyHookStr, ( KeyHookEvent ) keyEvent ).Wait();
+				Logger.WriteKeyEvent( keyHookStr, ( KeyHookEvent ) keyEvent );
 			}
 		}
 
