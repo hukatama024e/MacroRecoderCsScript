@@ -23,6 +23,7 @@ In this mode, Application is not shown.
 (2) Play button. When this button pushed, Application play macro script.  
 (3) Stop button. this button is enabled when Application record or play.  
 When this button pushed in recording, stop recording and open file dialog and save user input to macro script.  
+When this button pushed in playing macro script, cancel playing macro script.
 (4) File path of macro script.  
 (5) Browse button. When this button pushed, Open file dialog and input file path of selected macro scirpt.  
 (6) Error information. View expected error. For example, compile error for macro script.  
