@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -21,6 +22,7 @@ namespace UserInputMacro
 		public bool IsConsoleMode { get; set; } = true;
 		public double DpiWidth { get; internal set; } = 1.0;
 		public double DpiHeight { get; internal set; } = 1.0;
+		public CancellationToken CancelToken { get; set; }
 
 		private AppEnvironment()
 		{

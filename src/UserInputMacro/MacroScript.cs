@@ -12,7 +12,10 @@ namespace UserInputMacro
 		public async Task Delay( int millsecond )
 		{
 			try {
-				await Task.Delay( millsecond );
+				await Task.Delay( millsecond, AppEnvironment.GetInstance().CancelToken );
+			}
+			catch( TaskCanceledException ) {
+				throw;
 			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
@@ -29,6 +32,9 @@ namespace UserInputMacro
 
 				await SendKeyInput( input.ToArray() );
 			}
+			catch( TaskCanceledException ) {
+				throw;
+			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
 			}
@@ -44,6 +50,9 @@ namespace UserInputMacro
 
 				await SendKeyInput( input.ToArray() );
 			}
+			catch( TaskCanceledException ) {
+				throw;
+			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
 			}
@@ -53,6 +62,9 @@ namespace UserInputMacro
 		{
 			try {
 				await GetSingleMouseEventTask( x, y, MouseEvent.Move );
+			}
+			catch( TaskCanceledException ) {
+				throw;
 			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
@@ -64,6 +76,9 @@ namespace UserInputMacro
 			try {
 				await GetSingleMouseEventTask( x, y, MouseEvent.LeftDown );
 			}
+			catch( TaskCanceledException ) {
+				throw;
+			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
 			}
@@ -73,6 +88,9 @@ namespace UserInputMacro
 		{
 			try {
 				await GetSingleMouseEventTask( x, y, MouseEvent.LeftUp );
+			}
+			catch( TaskCanceledException ) {
+				throw;
 			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
@@ -84,6 +102,9 @@ namespace UserInputMacro
 			try {
 				await GetSingleMouseEventTask( x, y, MouseEvent.MiddleDown );
 			}
+			catch( TaskCanceledException ) {
+				throw;
+			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
 			}
@@ -93,6 +114,9 @@ namespace UserInputMacro
 		{
 			try {
 				await GetSingleMouseEventTask( x, y, MouseEvent.MiddleUp );
+			}
+			catch( TaskCanceledException ) {
+				throw;
 			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
@@ -104,6 +128,9 @@ namespace UserInputMacro
 			try {
 				await GetSingleMouseEventTask( x, y, MouseEvent.RightDown );
 			}
+			catch( TaskCanceledException ) {
+				throw;
+			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
 			}
@@ -113,6 +140,9 @@ namespace UserInputMacro
 		{
 			try {
 				await GetSingleMouseEventTask( x, y, MouseEvent.RightUp );
+			}
+			catch( TaskCanceledException ) {
+				throw;
 			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
@@ -129,6 +159,9 @@ namespace UserInputMacro
 
 				await SendMouseInput( input.ToArray() );
 			}
+			catch( TaskCanceledException ) {
+				throw;
+			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
 			}
@@ -144,6 +177,9 @@ namespace UserInputMacro
 
 				await SendMouseInput( input.ToArray() );
 			}
+			catch( TaskCanceledException ) {
+				throw;
+			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
 			}
@@ -152,10 +188,12 @@ namespace UserInputMacro
 		public async Task SetMode( byte mode )
 		{
 			try {
-				await Task.Run( () => 
-				{
+				await Task.Run( () => {
 					AppEnvironment.GetInstance().Mode = ( ModeKind ) mode;
-				} );
+				}, AppEnvironment.GetInstance().CancelToken );
+			}
+			catch( TaskCanceledException ) {
+				throw;
 			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
@@ -165,7 +203,10 @@ namespace UserInputMacro
 		public async Task WrileUserCustomLog( Dictionary<string, string> userCustomDic )
 		{
 			try {
-				await Logger.WriteUserCustomAsync( userCustomDic );
+				await Task.Run( () => Logger.WriteUserCustomAsync( userCustomDic ), AppEnvironment.GetInstance().CancelToken );
+			}
+			catch( TaskCanceledException ) {
+				throw;
 			}
 			catch( Exception ex ) {
 				await CommonUtil.HandleExceptionAsync( ex );
@@ -233,7 +274,7 @@ namespace UserInputMacro
 			}
 
 			if( !CommonUtil.CheckMode( ModeKind.KeyOnly ) ) {
-				await Task.Run( () => SendInputWrapper.SendMouseInput( mouseInput ) );
+				await Task.Run( () => SendInputWrapper.SendMouseInput( mouseInput ), AppEnvironment.GetInstance().CancelToken );
 			}
 		}
 
@@ -244,7 +285,7 @@ namespace UserInputMacro
 			}
 
 			if( !CommonUtil.CheckMode( ModeKind.MouseOnly ) ) {
-				await Task.Run( () => SendInputWrapper.SendKeyInput( keyInput ) );
+				await Task.Run( () => SendInputWrapper.SendKeyInput( keyInput ), AppEnvironment.GetInstance().CancelToken );
 			}
 		}
 	}

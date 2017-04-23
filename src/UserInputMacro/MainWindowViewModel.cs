@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace UserInputMacro
 		private static readonly PropertyChangedEventArgs scriptPathChangedEventArgs = new PropertyChangedEventArgs( nameof( ScriptPath ) );
 		private static readonly PropertyChangedEventArgs errorMessageChangedEventArgs = new PropertyChangedEventArgs( nameof( ErrorMessage ) );
 
+		private CancellationTokenSource cancelTokenSrc;
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public DelegateCommand RecordCommand { get; set; }
@@ -99,12 +101,17 @@ namespace UserInputMacro
 
 			try {
 				buttonState.IsPlaying = true;
-				WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
+				cancelTokenSrc = new CancellationTokenSource();
+				AppEnvironment.GetInstance().CancelToken = cancelTokenSrc.Token;
 
+				WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
 				await ScriptExecuter.ExecuteAsync( ScriptPath );
 			}
 			catch( CompilationErrorException ex ) {
 				ErrorMessage = "[Compile Error]" + Environment.NewLine + ex.Message;
+			}
+			catch( TaskCanceledException ) {
+				ErrorMessage = "[Message]Script was cancelled.";
 			}
 			catch( Exception ) {
 				throw;
@@ -112,7 +119,6 @@ namespace UserInputMacro
 
 			buttonState.IsPlaying = false;
 			WinDispacher?.Invoke( new Action( CommandManager.InvalidateRequerySuggested ) );
-
 		}
 
 		private void StopCmd_Execute()
@@ -123,7 +129,7 @@ namespace UserInputMacro
 				SaveMacroScript();
 			}
 			else if( buttonState.IsPlaying ) {
-				buttonState.IsPlaying = false;
+				cancelTokenSrc.Cancel();
 			}
 		}
 
