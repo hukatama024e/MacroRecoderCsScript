@@ -5,12 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace UserInputMacro
 {
-	class Logger
+	static class Logger
 	{
+		private static SemaphoreSlim semaphore = new SemaphoreSlim( 1, 1 );
+
 		private static readonly string DATE_FORMAT = "yyyy/MM/dd HH:mm:ss.fff";
 		private static readonly string INPUT_LOG_NAME = "input_log.txt";
 		private static readonly string ERROR_LOG_NAME = "error_log.txt";
@@ -144,10 +147,20 @@ namespace UserInputMacro
 
 		private async static Task AppendLogAsync( string pass, Dictionary<string, string> labeledData )
 		{
-			using( var fs = new FileStream( pass, FileMode.Append, FileAccess.Write, FileShare.ReadWrite ) ) {
-				using( var sw = new StreamWriter( fs ) ) {
-					await sw.WriteLineAsync( CreateLtsvLog( labeledData ) );
+			await semaphore.WaitAsync().ConfigureAwait( false );
+
+			try {
+				using( var fs = new FileStream( pass, FileMode.Append, FileAccess.Write, FileShare.ReadWrite ) ) {
+					using( var sw = new StreamWriter( fs ) ) {
+						await sw.WriteLineAsync( CreateLtsvLog( labeledData ) );
+					}
 				}
+			}
+			catch( Exception ) {
+				throw;
+			}
+			finally {
+				semaphore.Release();
 			}
 		}
 
