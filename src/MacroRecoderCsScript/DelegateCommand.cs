@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	class DelegateCommand : ICommand
 	{

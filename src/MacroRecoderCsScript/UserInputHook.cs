@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.ComponentModel;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	class UserInputHook : IDisposable
 	{

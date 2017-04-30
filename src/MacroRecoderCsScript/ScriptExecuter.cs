@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	static class ScriptExecuter
 	{

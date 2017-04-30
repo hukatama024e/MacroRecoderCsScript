@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	class AsyncDelegateCommand : ICommand
 	{

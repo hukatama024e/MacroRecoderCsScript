@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	[Flags]
 	public enum ModeKind : byte

@@ -1,11 +1,11 @@
-﻿<Window x:Class="UserInputMacro.MainWindow"
+﻿<Window x:Class="MacroRecoderCsScript.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UserInputMacro"
+        xmlns:local="clr-namespace:MacroRecoderCsScript"
         mc:Ignorable="d"
-        Title="UserInputMacro" Height="301.867" Width="414.6">
+        Title="MacroRecoderCsScript" Height="301.867" Width="414.6">
     <Grid>
         <Button x:Name="recordButton" Content="Record"
                 HorizontalAlignment="Left" Margin="10,10,0,0"

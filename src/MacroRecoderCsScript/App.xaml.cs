@@ -4,7 +4,7 @@ using System.Windows;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis.Scripting;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	/// <summary>
 	/// App.xaml の相互作用ロジック
@@ -54,7 +54,7 @@ namespace UserInputMacro
 
 		private void Usage()
 		{
-			CommonUtil.WriteToConsole( "Usage: UserInputMacro <option>" + Environment.NewLine +
+			CommonUtil.WriteToConsole( "Usage: MacroRecoderCsScript <option>" + Environment.NewLine +
 										"[option]" + Environment.NewLine +
 										"-script=<scirpt path>: Command line mode and only execute script" );
 		}

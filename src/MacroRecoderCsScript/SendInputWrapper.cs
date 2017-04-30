@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.ComponentModel;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	public static class SendInputWrapper
 	{

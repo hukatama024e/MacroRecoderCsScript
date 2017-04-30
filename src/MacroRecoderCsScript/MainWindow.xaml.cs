@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック

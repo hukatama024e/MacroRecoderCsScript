@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	[Flags]
 	public enum LowLevelKeyEvent : uint

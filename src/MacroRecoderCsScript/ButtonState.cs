@@ -1,4 +1,4 @@
-﻿namespace UserInputMacro
+﻿namespace MacroRecoderCsScript
 {
 	public class ButtonState
 	{

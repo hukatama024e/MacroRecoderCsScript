@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	static class Logger
 	{

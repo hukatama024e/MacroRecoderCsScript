@@ -2,7 +2,7 @@
 using System.Text;
 using System.Diagnostics;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	class ScriptRecorder
 	{

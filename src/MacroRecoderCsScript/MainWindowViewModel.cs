@@ -8,7 +8,7 @@ using Microsoft.Win32;
 using System.Windows.Input;
 using Microsoft.CodeAnalysis.Scripting;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	class MainWindowViewModel : INotifyPropertyChanged
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace UserInputMacro
+namespace MacroRecoderCsScript
 {
 	internal static class NativeMethods
 	{
