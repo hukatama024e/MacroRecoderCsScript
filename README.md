@@ -45,10 +45,10 @@ await PullLeftButton(100, 100);
 ```
 
 ## Download
-Download the [latest release]
+Download the [latest release].
 
 ## Reference
-Under construction...
+See [Macro Reference]. 
 
 ## License
 [MIT License]
@@ -56,4 +56,4 @@ Under construction...
 [latest release]: https://github.com/hukatama024e/MacroRecoderCsScript/releases
 [Screen Shot]:    Image/readme_screenshot.png
 [MIT License]:    LICENSE
-
+[Macro Reference]: https://github.com/hukatama024e/MacroRecoderCsScript/wiki/Macro-Reference
