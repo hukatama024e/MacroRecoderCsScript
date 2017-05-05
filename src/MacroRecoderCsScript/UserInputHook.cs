@@ -53,8 +53,7 @@ namespace MacroRecoderCsScript
 			KeyHookHandle = NativeMethods.SetWindowsHookEx( ( int )WindowsHookID.KeyBoardLowLevel, KeyHookCallback, module, 0 );
 
 			if( KeyHookHandle == IntPtr.Zero ) {
-				int errorCode = Marshal.GetLastWin32Error();
-				throw new Win32Exception( errorCode );
+				throw new Win32Exception();
 			}
 		}
 
@@ -64,8 +63,7 @@ namespace MacroRecoderCsScript
 			MouseHookHandle = NativeMethods.SetWindowsHookEx( ( int )WindowsHookID.MouseLowLevel, MouseHookCallback, module, 0 );
 
 			if( MouseHookHandle == IntPtr.Zero ) {
-				int errorCode = Marshal.GetLastWin32Error();
-				throw new Win32Exception( errorCode );
+				throw new Win32Exception();
 			}
 		}
 

@@ -22,10 +22,10 @@ namespace MacroRecoderCsScript
 		[DllImport( "user32.dll", SetLastError = true )]
 		internal static extern uint SendInput( uint inputNum, Input[] inputs, int inputStructSize );
 
-		[DllImport( "Kernel32.dll" )]
+		[DllImport( "Kernel32.dll", SetLastError = true )]
 		internal static extern bool AttachConsole( int processId );
 
-		[DllImport( "Kernel32.dll" )]
+		[DllImport( "Kernel32.dll", SetLastError = true )]
 		internal static extern bool FreeConsole();
 	}
 }

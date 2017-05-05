@@ -19,8 +19,7 @@ namespace MacroRecoderCsScript
 			result = NativeMethods.SendInput( ( uint ) input.Length, input, Marshal.SizeOf( input[ 0 ] ) );
 
 			if( result == NativeMethods.SEND_INPUT_FAILED ) {
-				int errorCode = Marshal.GetLastWin32Error();
-				throw new Win32Exception( errorCode );
+				throw new Win32Exception();
 			}
 		}
 
@@ -38,8 +37,7 @@ namespace MacroRecoderCsScript
 			result = NativeMethods.SendInput( ( uint ) input.Length, input, Marshal.SizeOf( input[ 0 ] ) );
 
 			if( result == NativeMethods.SEND_INPUT_FAILED ) {
-				int errorCode = Marshal.GetLastWin32Error();
-				throw new Win32Exception( errorCode );
+				throw new Win32Exception();
 			}
 		}
 	}
