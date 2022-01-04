@@ -200,7 +200,7 @@ namespace MacroRecoderCsScript
 			}
 		}
 
-		public async Task WrileUserCustomLog( Dictionary<string, string> userCustomDic )
+		public async Task WriteUserCustomLog( Dictionary<string, string> userCustomDic )
 		{
 			try {
 				await Task.Run( () => Logger.WriteUserCustomAsync( userCustomDic ), AppEnvironment.GetInstance().CancelToken );

@@ -51,6 +51,6 @@ async Task WriteCustomLog( string message )
 			{ "Message",    message        }
 		};
 	
-		WrileUserCustomLog( userCustomDic );
+		WriteUserCustomLog( userCustomDic );
 	} );
 }
